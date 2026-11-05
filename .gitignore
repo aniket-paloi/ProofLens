@@ -1,0 +1,40 @@
+# Environments & Dependencies
+node_modules/
+dist/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases & logs
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# Sensitive credentials
+.env
+.env.*
+!.env.example
+
+# Temporary generated test storage
+test_prooflens.db
+prooflens.db
+storage/originals/*
+!storage/originals/.gitkeep
+storage/derivatives/pages/*
+!storage/derivatives/pages/.gitkeep
+storage/derivatives/crops/*
+!storage/derivatives/crops/.gitkeep
+storage/reports/*
+!storage/reports/.gitkeep
+storage/checkpoints/*
+!storage/checkpoints/.gitkeep
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
