@@ -47,9 +47,4 @@ python -m pytest backend/tests/ -v
 
 ---
 
-## Milestone Progress Matrix
-- **Prompt 00:** Project rules, environment inspection & requirements matrix — **COMPLETED**
-- **Prompt 01:** Research repositories audit & third-party notices — **COMPLETED**
-- **Prompt 02:** Working skeleton, database models & Stoic iOS frontend — **COMPLETED**
-- **Prompt 03:** Ingestion, page rendering & background jobs — **IN PROGRESS**
 
