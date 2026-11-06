@@ -52,3 +52,4 @@ python -m pytest backend/tests/ -v
 - **Prompt 01:** Research repositories audit & third-party notices — **COMPLETED**
 - **Prompt 02:** Working skeleton, database models & Stoic iOS frontend — **COMPLETED**
 - **Prompt 03:** Ingestion, page rendering & background jobs — **IN PROGRESS**
+

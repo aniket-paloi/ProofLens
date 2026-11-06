@@ -21,3 +21,4 @@ echo.
 echo Both servers are running in separate terminal windows.
 echo To stop, simply close the opened windows.
 pause
+
