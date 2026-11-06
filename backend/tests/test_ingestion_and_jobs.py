@@ -68,7 +68,8 @@ def test_multi_document_upload_and_validation(client):
 
     # Verify pages were rendered
     db = SessionLocal()
-    pages = db.query(Page).all()
+    doc_ids = [d["id"] for d in docs]
+    pages = db.query(Page).filter(Page.document_id.in_(doc_ids)).all()
     assert len(pages) == 2
     for p in pages:
         assert p.rendered_image_path is not None

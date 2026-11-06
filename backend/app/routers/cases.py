@@ -128,6 +128,60 @@ def list_case_documents(case_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Case not found")
     return c.documents
 
+@router.get("/{case_id}/timeline")
+def get_case_timeline(case_id: str, db: Session = Depends(get_db)):
+    from backend.app.core.audit import verify_case_audit_chain
+    from backend.app.models.finding import AuditEvent
+    c = db.query(Case).filter(Case.id == case_id).first()
+    if not c:
+        raise HTTPException(status_code=404, detail="Case not found")
+    events = (
+        db.query(AuditEvent)
+        .filter(AuditEvent.case_id == case_id)
+        .order_by(AuditEvent.sequence_number.asc())
+        .all()
+    )
+    is_valid, reason, count = verify_case_audit_chain(db, case_id)
+    return {
+        "case_id": case_id,
+        "is_chain_valid": is_valid,
+        "verification_status": "VERIFIED" if is_valid else "TAMPER_DETECTED",
+        "verification_message": reason,
+        "total_events": count,
+        "timeline": [
+            {
+                "id": ev.id,
+                "sequence_number": ev.sequence_number,
+                "action_type": ev.action_type,
+                "actor_id": ev.actor_id,
+                "payload": ev.payload_json,
+                "previous_event_hash": ev.previous_event_hash,
+                "current_event_hash": ev.current_event_hash,
+                "created_at": ev.created_at.isoformat() if ev.created_at else None
+            }
+            for ev in events
+        ]
+    }
+
+@router.post("/{case_id}/checkpoint")
+def create_checkpoint(case_id: str, db: Session = Depends(get_db)):
+    from backend.app.audit.verifier import generate_case_checkpoint
+    try:
+        return generate_case_checkpoint(db=db, case_id=case_id)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+
+@router.post("/{case_id}/verify-checkpoint")
+def verify_checkpoint_endpoint(case_id: str, checkpoint_payload: dict, db: Session = Depends(get_db)):
+    from backend.app.audit.verifier import verify_retained_checkpoint
+    is_valid, msg, details = verify_retained_checkpoint(checkpoint_payload, db=db)
+    return {
+        "case_id": case_id,
+        "is_valid": is_valid,
+        "message": msg,
+        "details": details
+    }
+
 # Document page serving router (registered directly or under /documents)
 page_router = APIRouter(prefix="/documents", tags=["Document Derivatives"])
 

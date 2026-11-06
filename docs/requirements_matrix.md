@@ -35,7 +35,7 @@
 
 | Requirement Area | Specification Rule | Component / Contract | Status |
 | :--- | :--- | :--- | :--- |
-| **UI Aesthetics** | **Strict Mandate:** Stoic iOS design language from Mobbin. Deep charcoal (`#121212`), warm off-white canvas (`#FBFBF9`), rounded cards (`rounded-3xl`), pill buttons (`rounded-full`), calm typography, **NO generic AI blue**. | `frontend/src/index.css`, Tailwind config, UI components | Planned (Prompt 02/04) |
+| **UI Aesthetics** | **Strict Mandate:** Enterprise compliance and multi-document reconciliation design system benchmarked on Thoropass, Draftable, and modern transaction reconciliation workspaces. Soft-grey canvas (`#F8FAFC`), crisp white cards (`#FFFFFF`), dark slate typography (`#0F172A`), persistent sidebar (`#0F172A`), indigo/muted violet primary actions (`#4F46E5`), red for discrepancies, amber for warnings, and emerald for verified checks. | `frontend/src/index.css`, Tailwind config, UI components | Completed (Prompts 02 & UI Evolution) |
 | **Evidence Viewer** | Desktop-first 3-column workspace (~20% docs, ~50% source viewer, ~30% findings). PDF.js overlays with normalized coordinates. Side-by-side comparison. | `frontend/src/components/viewer` | Planned (Prompt 04) |
 | **Native vs Rendered Check** | Render important fields and re-OCR independently; flag discrepancies between selectable text and visible pixels. | `backend/parsers/crosscheck` | Planned (Prompt 07) |
 | **Report Generation** | 6-section PDF (ReportLab) and JSON dossier: Overview, Extracted Info, Contextual Analysis, Visual Findings, Evidence Traceability, Limitations. | `backend/reports` | Planned (Prompt 15) |

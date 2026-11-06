@@ -1,0 +1,133 @@
+{
+  "LOAN-2026-TR01": {
+    "scenario": "CLEAN_CONSISTENT",
+    "expected_findings": [],
+    "employer_actual": "Tata Consultancy Services Ltd",
+    "net_salary_slip": 95000,
+    "split": "TRAIN"
+  },
+  "LOAN-2026-TR02": {
+    "scenario": "CLEAN_CONSISTENT",
+    "expected_findings": [],
+    "employer_actual": "Infosys Technologies Ltd",
+    "net_salary_slip": 68000,
+    "split": "TRAIN"
+  },
+  "LOAN-2026-TR03": {
+    "scenario": "LEGITIMATE_SPLIT_PAYROLL",
+    "expected_findings": [
+      {
+        "finding_type": "CANDIDATE_SPLIT_PAYROLL",
+        "severity": "LOW",
+        "target_sum": 88000
+      }
+    ],
+    "employer_actual": "Reliance Jio Infocomm Ltd",
+    "net_salary_slip": 88000,
+    "split": "TRAIN"
+  },
+  "LOAN-2026-TR04": {
+    "scenario": "SALARY_INFLATION_MISMATCH",
+    "expected_findings": [
+      {
+        "finding_type": "SALARY_INFLATION_DISCREPANCY",
+        "severity": "HIGH",
+        "delta": -31000
+      }
+    ],
+    "employer_actual": "HDFC Bank Ltd",
+    "net_salary_slip": 76000,
+    "split": "TRAIN"
+  },
+  "LOAN-2026-TR05": {
+    "scenario": "EMPLOYER_ENTITY_MISMATCH",
+    "expected_findings": [
+      {
+        "finding_type": "EMPLOYER_NAME_MISMATCH",
+        "severity": "HIGH",
+        "declared": "Wipro Enterprises Ltd",
+        "found": "Alpha Logistics Pvt Ltd"
+      }
+    ],
+    "employer_actual": "Alpha Logistics Pvt Ltd",
+    "net_salary_slip": 110000,
+    "split": "TRAIN"
+  },
+  "LOAN-2026-TR06": {
+    "scenario": "PROMPT_INJECTION_TEXT_LAYER",
+    "expected_findings": [
+      {
+        "finding_type": "PROMPT_INJECTION_DETECTED",
+        "severity": "CRITICAL"
+      }
+    ],
+    "employer_actual": "Mahindra & Mahindra Ltd",
+    "net_salary_slip": 82000,
+    "split": "TRAIN"
+  },
+  "LOAN-2026-VA01": {
+    "scenario": "CLEAN_CONSISTENT",
+    "expected_findings": [],
+    "employer_actual": "Larsen & Toubro Infotech",
+    "net_salary_slip": 105000,
+    "split": "VAL"
+  },
+  "LOAN-2026-VA02": {
+    "scenario": "FONT_BASELINE_DISPLACEMENT",
+    "expected_findings": [
+      {
+        "finding_type": "FONT_BASELINE_ANOMALY",
+        "severity": "MEDIUM",
+        "displacement_px": 3.5
+      }
+    ],
+    "employer_actual": "Kotak Mahindra Prime",
+    "net_salary_slip": 92000,
+    "split": "VAL"
+  },
+  "LOAN-2026-TE01": {
+    "scenario": "SALARY_INFLATION_MISMATCH",
+    "expected_findings": [
+      {
+        "finding_type": "SALARY_INFLATION_DISCREPANCY",
+        "severity": "HIGH",
+        "delta": -48000
+      },
+      {
+        "finding_type": "CANDIDATE_SPLIT_PAYROLL",
+        "severity": "LOW",
+        "candidate_amount": 33000
+      }
+    ],
+    "employer_actual": "Apex FinTech Labs Pvt Ltd",
+    "net_salary_slip": 75000,
+    "split": "TEST"
+  },
+  "LOAN-2026-TE02": {
+    "scenario": "CLEAN_CONSISTENT",
+    "expected_findings": [],
+    "employer_actual": "Bharti Airtel Ltd",
+    "net_salary_slip": 84000,
+    "split": "TEST"
+  },
+  "LOAN-2026-TE03": {
+    "scenario": "BALANCE_RECONCILIATION_FAILURE",
+    "expected_findings": [
+      {
+        "finding_type": "BALANCE_ARITHMETIC_FAILURE",
+        "severity": "HIGH",
+        "discrepancy": 50000
+      }
+    ],
+    "employer_actual": "Adani Ports & SEZ Ltd",
+    "net_salary_slip": 120000,
+    "split": "TEST"
+  },
+  "LOAN-2026-TE04": {
+    "scenario": "VARIABLE_BONUS_ROLLUP",
+    "expected_findings": [],
+    "employer_actual": "Flipkart Internet Pvt Ltd",
+    "net_salary_slip": 98000,
+    "split": "TEST"
+  }
+}

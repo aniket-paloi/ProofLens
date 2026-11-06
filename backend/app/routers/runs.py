@@ -1,6 +1,9 @@
+import os
 import hashlib
-from typing import List
-from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
+from typing import List, Dict, Any, Optional
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks, Body
+from fastapi.responses import FileResponse
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from backend.app.core.database import get_db
 from backend.app.core.audit import record_audit_event
@@ -12,8 +15,17 @@ from backend.app.schemas.case import ProcessingRunResponse
 from backend.app.schemas.field import FieldResponse, ClaimResponse, TransactionResponse
 from backend.app.schemas.finding import FindingResponse
 from backend.worker.local_runner import process_run
+from backend.app.financial.corrections import calculate_coverage_matrix
+from backend.app.api.graph import build_case_claim_graph
+from backend.app.agent.investigator import run_bounded_investigation, answer_case_question
+from backend.app.reports.generator import generate_pdf_dossier
+from backend.app.reports.manifest import generate_evidence_manifest
+from backend.app.core.config import settings
 
 router = APIRouter(tags=["Processing Runs & Intelligence"])
+
+class QuestionRequest(BaseModel):
+    question: str
 
 @router.post("/cases/{case_id}/runs", response_model=ProcessingRunResponse, status_code=status.HTTP_201_CREATED)
 def trigger_processing_run(
@@ -106,20 +118,74 @@ def get_run_findings(run_id: str, db: Session = Depends(get_db)):
 
 @router.get("/runs/{run_id}/coverage")
 def get_run_coverage(run_id: str, db: Session = Depends(get_db)):
-    checks = db.query(CheckExecution).filter(CheckExecution.run_id == run_id).all()
+    return calculate_coverage_matrix(db, run_id)
+
+@router.get("/runs/{run_id}/graph")
+def get_run_claim_graph(run_id: str, db: Session = Depends(get_db)):
+    return build_case_claim_graph(db, run_id)
+
+@router.post("/findings/{finding_id}/investigate")
+def investigate_finding(
+    finding_id: str,
+    db: Session = Depends(get_db)
+):
+    finding = db.query(Finding).filter(Finding.id == finding_id).first()
+    if not finding:
+        raise HTTPException(status_code=404, detail="Finding not found")
+    
+    result = run_bounded_investigation(
+        case_id=finding.case_id,
+        run_id=finding.run_id,
+        db=db,
+        target_finding_id=finding_id
+    )
+    return result
+
+@router.post("/runs/{run_id}/questions")
+def ask_run_question(
+    run_id: str,
+    req: QuestionRequest,
+    db: Session = Depends(get_db)
+):
+    return answer_case_question(run_id, req.question, db)
+
+@router.post("/runs/{run_id}/reports")
+def generate_run_reports(
+    run_id: str,
+    db: Session = Depends(get_db)
+):
+    run = db.query(ProcessingRun).filter(ProcessingRun.id == run_id).first()
+    if not run:
+        raise HTTPException(status_code=404, detail="Processing run not found")
+
+    pdf_res = generate_pdf_dossier(db, run_id)
+    manifest_res = generate_evidence_manifest(db, run_id)
+
+    record_audit_event(
+        db=db,
+        case_id=run.case_id,
+        action_type="REPORT_GENERATED",
+        actor_id="reviewer",
+        payload={
+            "run_id": run.id,
+            "pdf_report": pdf_res["filename"],
+            "json_manifest": manifest_res["filename"]
+        }
+    )
+
     return {
+        "status": "GENERATED",
         "run_id": run_id,
-        "total_checks": len(checks),
-        "checks": [
-            {
-                "id": c.id,
-                "check_id": c.check_id,
-                "lifecycle_state": c.lifecycle_state,
-                "applicability": c.applicability,
-                "outcome": c.outcome,
-                "assumptions": c.assumptions,
-                "limitations": c.scoped_limitations
-            }
-            for c in checks
-        ]
+        "pdf_dossier": pdf_res["filename"],
+        "json_manifest": manifest_res["filename"],
+        "pdf_download_url": f"/api/reports/{pdf_res['filename']}",
+        "manifest_download_url": f"/api/reports/{manifest_res['filename']}"
     }
+
+@router.get("/reports/{filename}")
+def download_report_file(filename: str):
+    file_path = os.path.join(settings.REPORTS_DIR, filename)
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="Report file not found")
+    media_type = "application/pdf" if filename.endswith(".pdf") else "application/json"
+    return FileResponse(file_path, media_type=media_type, filename=filename)

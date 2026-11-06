@@ -6,7 +6,7 @@ ProofLens is an evidence-first, reviewer-controlled investigation workspace for 
 
 ```
                           [ Client Layer (Vite + React + TS) ]
-          (Stoic iOS Aesthetic: Deep Charcoal #121212, Warm Canvas #FBFBF9, No AI-Blue)
+          (Enterprise Investigation: Soft-Grey Canvas #F8FAFC, Dark Slate #0F172A, Indigo #4F46E5, 3-Panel Workspace)
        +--------------------------------------------------------------------------+
        | [Documents Navigation (20%)] | [Source Viewer (50%)] | [Findings (30%)]   |
        |  - Packet Checklist          |  - PDF.js Overlays    |  - Typed Findings |
@@ -36,33 +36,41 @@ ProofLens is an evidence-first, reviewer-controlled investigation workspace for 
 
 ---
 
-## 2. Stoic iOS-Inspired Design System Specification
+## 2. Enterprise Investigation & Multi-Document Reconciliation Design System Specification
 
-In strict conformance with the user directive, ProofLens completely rejects generic "AI-blue" dashboard aesthetics (such as standard saturated blue/indigo templates), adopting the minimalist, human-crafted design language of **Stoic iOS** (curated on Mobbin).
+In accordance with user directives and industry enterprise benchmarks (Thoropass compliance suite, Draftable document comparator, and modern transaction reconciliation workspaces), ProofLens features a high-density, professional investigative workspace.
 
 ### 2.1 Color Tokens
 
 | Token Name | Hex Code | Purpose & Usage |
 | :--- | :--- | :--- |
-| `--surface-canvas` | `#FBFBF9` | Warm paper/chalk background canvas for light mode. Calming, organic. |
-| `--surface-card` | `#FFFFFF` | Primary card background, elevated with fine hairline border `#E8E8E6`. |
-| `--surface-dark` | `#121212` | Deep charcoal / near-black for inverted hero cards, key controls, and focus states. |
-| `--surface-subtle` | `#F4F4F2` | Secondary badge, date strip, and input background. |
-| `--text-primary` | `#18181B` | High-opacity crisp ink for primary typography and titles. |
-| `--text-secondary` | `#71717A` | Warm graphite for conversational prompts, explanations, and metadata. |
-| `--text-muted` | `#A1A1AA` | Low-opacity graphite for tracked small-caps and timestamps. |
-| `--accent-amber` | `#B45309` / `#FEF3C7` | Soft terracotta / amber for investigation alerts and discrepancy indicators. |
-| `--accent-emerald`| `#047857` / `#D1FAE5` | Muted sage green for verified check completion (never blanket "fraud-free"). |
-| `--accent-rose` | `#B91C1C` / `#FEE2E2` | Restrained crimson for critical mismatch or corrupt document warnings. |
+| `--surface-canvas` | `#F8FAFC` | Soft-grey canvas background for clean readability and reduced eye strain. |
+| `--surface-card` | `#FFFFFF` | Crisp white card surface, elevated with subtle slate border `#E2E8F0`. |
+| `--surface-dark` | `#0F172A` | Deep dark slate for persistent left sidebar, badges, and high-contrast accents. |
+| `--surface-subtle` | `#F1F5F9` | Slate-100 for secondary badges, input backgrounds, and toolbar controls. |
+| `--text-primary` | `#0F172A` | Dark slate typography for high readability across data tables. |
+| `--text-secondary` | `#475569` | Slate-600 for descriptions, secondary metrics, and field notes. |
+| `--text-muted` | `#64748B` | Slate-500 for small-caps tags, timestamps, and column headers. |
+| `--primary-action` | `#4F46E5` / `#6366F1` | Indigo / muted violet for primary pipeline triggers, active selections, and focus rings. |
+| `--semantic-red` | `#EF4444` / `#FEE2E2` | Red for discrepancies, arithmetic mismatches, and unreconciled exceptions. |
+| `--semantic-amber`| `#F59E0B` / `#FEF3C7` | Amber for warnings, candidate split-matches, and items needing reviewer attention. |
+| `--semantic-emerald`| `#10B981` / `#D1FAE5` | Emerald for verified checksums, reconciled ledgers, and healthy controls. |
 
 ### 2.2 Typography Hierarchy
 
-- **Font Stack:** Apple System Font Stack (`-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", sans-serif`).
-- **Main Headings:** Lowercase or conversational sentence case, bold, tight tracking (`meet prooflens.`, `good evening.`, `investigate.`).
-- **Subheadings & Questions:** Medium weight, relaxed line-height to feel like a calm reviewer dialogue (`Are these payment periods aligned?`).
-- **Captions & Categories:** Tracked uppercase small-caps (`tracking-widest uppercase text-[11px] text-neutral-400`, e.g., `EVIDENCE DOSSIER`, `GET INSPIRED`).
+- **Font Stack:** Inter, system sans-serif (`"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`).
+- **Main Headings:** Crisp sentence case with tight tracking (`Program & Reconciliation Overview`, `3-Panel Investigation Workspace`).
+- **Captions & Categories:** Tracked uppercase small-caps (`text-[10px] uppercase font-bold tracking-wider text-slate-400`).
+- **Data & Arithmetic:** Monospaced formatting for currency numbers, hashes, and bounding box coordinates (`JetBrains Mono`, `ui-monospace`).
 
-### 2.3 Modular Controls & Cards
+### 2.3 Modular Investigation Workspace Architecture
+
+The workspace is organized into a persistent navigation structure and a 3-panel synchronized investigation stage:
+1. **Persistent Left Sidebar (`w-64` / `w-16` collapsed):** Dark slate `#0F172A`, housing case context, navigation views, and reviewer status.
+2. **Top Navigation Header (`h-16`):** Breadcrumbs, global search, sensitivity threshold slider, and primary action triggers.
+3. **Panel 1: Documents & Extracted Packet Claims (`w-80`):** Accordion document file selector, filter tabs (All, Discrepancies, Matched, Warnings), and claim items.
+4. **Panel 2: Evidence Viewer (`flex-1`):** Draftable-inspired side-by-side document comparator, zoom controls, sync scroll lock, bounding box highlights, minimap diff gutter, and bottom dual-crop raster alignment inspector.
+5. **Panel 3: Findings & Quick View Inspector (`w-96`):** Transaction quick view drawer with visual reconciliation match status node tree (root claim -> salary slip -> bank credit -> split candidate), structured audit table, non-accusatory alternative hypotheses, and sovereign reviewer disposition controls.
 
 - **Extra-Rounded Radii:** Cards use `rounded-3xl` (24px) or `rounded-2xl` (16px), giving a soft, tactile presence.
 - **Pill Action Buttons:** High-contrast pill buttons (`rounded-full py-2.5 px-6 font-medium bg-[#121212] text-white hover:bg-neutral-800`).

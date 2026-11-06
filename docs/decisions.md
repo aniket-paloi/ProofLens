@@ -1,10 +1,16 @@
 # ProofLens Architecture Decision Records (ADRs)
 
-## ADR-001: Rejection of Generic "AI-Blue" UI in Favor of Stoic iOS Minimalist Aesthetic
+## ADR-001: Enterprise Investigation & Multi-Document Reconciliation Workspace UI (Supersedes Stoic Mobile Reference)
 
-- **Context:** Standard AI-generated prototypes default to saturated blue/indigo color schemes (`#2563EB`, `#4F46E5`), dense microservice dashboards, and visual noise that conveys robotic boilerplate rather than reviewer focus.
-- **Decision:** Strictly enforce the design language of **Stoic iOS** (referenced via Mobbin and provided screen captures). The UI adopts warm off-white canvas backgrounds (`#FBFBF9`), deep charcoal elements (`#121212`), high-contrast pill buttons (`rounded-full`), soft rounded cards (`rounded-3xl`), conversational lowercase headers (`meet prooflens.`, `investigate.`), and restrained terracotta/sage status indicators.
-- **Consequences:** Provides a serene, human-crafted investigation workspace that reduces reviewer fatigue while elevating evidence clarity.
+- **Context:** While mobile-first minimalist templates emphasize conversational tranquility, complex multi-document loan fraud investigations require dense evidentiary grounding, simultaneous side-by-side document comparison, and visual node reconciliation trees.
+- **Decision:** Adopt an enterprise compliance and reconciliation design system benchmarked directly against industry leading interfaces (Thoropass compliance suite, Draftable multi-page document comparator, and modern transaction reconciliation workspaces):
+  - **Color Palette:** Soft-grey canvas (`#F8FAFC`), crisp white cards (`#FFFFFF`), slate borders (`#E2E8F0`), dark slate typography (`#0F172A`), indigo/muted violet primary CTA actions (`#4F46E5`), red for discrepancies/exceptions (`#EF4444`), amber for warnings/candidate matches (`#F59E0B`), and emerald for reconciled/verified checks (`#10B981`).
+  - **Persistent Left Sidebar:** Collapsible enterprise sidebar with case context, active packet tags, and sovereign reviewer profile.
+  - **Three-Panel Investigation Workspace:**
+    - Panel 1: Document selector and extracted packet claims list with status filters.
+    - Panel 2: Evidence viewer with side-by-side comparison, bounding box overlays, minimap diff gutter, and bottom dual-crop raster alignment inspector.
+    - Panel 3: Findings inspector featuring a visual reconciliation match status node tree (root claim -> salary slip -> bank credit -> split candidate), structured audit table, non-accusatory alternative hypotheses, and sovereign reviewer disposition controls.
+- **Consequences:** Maximizes reviewer efficiency, supports side-by-side document scrutiny, and provides visual reconciliation node trees without sacrificing aesthetic sophistication.
 
 ---
 
@@ -37,4 +43,3 @@
 - **Context:** Preprocessing images or sanitizing PDFs risks altering forensic signatures (compression artifacts, font metadata, text streams).
 - **Decision:** Original file bytes are hashed (SHA-256) upon upload and stored immutably in `storage/originals/`. All rendering, OCR crops, and preview sanitization write exclusively to `storage/derivatives/`.
 - **Consequences:** Preserves byte-level chain of custody and ensures raw evidentiary integrity.
-

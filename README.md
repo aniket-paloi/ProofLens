@@ -6,13 +6,21 @@ ProofLens is an evidence-first, reviewer-controlled investigation workspace for 
 
 ---
 
-## Design System: Stoic iOS Aesthetic (Zero AI Blue)
-In accordance with user design directives and the [Stoic iOS design reference on Mobbin](https://mobbin.com/apps/stoic-ios-621f0be7-8046-45cd-b667-97add5f9c3c7), ProofLens avoids generic saturated blue/indigo templates, featuring:
-- **Warm Canvas:** `#FBFBF9` paper/chalk background canvas.
-- **Deep Charcoal & High Contrast:** `#121212` deep ink cards and key actions.
-- **Card Modularity:** Soft extra-rounded cards (`rounded-3xl` / 24px).
-- **Tactile Reviewer Controls:** Sleek pill-track sensitivity slider, horizontal packet selector strip, and high-contrast pill buttons (`rounded-full`).
-- **Restrained Indicators:** Terracotta/amber for unreviewed or conflicting observations, sage green for verified checks.
+## Design System: Enterprise Investigation & Multi-Document Reconciliation
+In accordance with user design directives and enterprise benchmarks (Thoropass, Draftable comparison viewer, and modern reconciliation workspaces), ProofLens features a high-density, professional investigative interface:
+
+- **Soft-Grey Canvas & Pure Surfaces:** `#F8FAFC` soft-slate background canvas with `#FFFFFF` crisp card surfaces and subtle borders (`#E2E8F0`).
+- **Dark Slate Typography:** High-contrast text hierarchy (`#0F172A` slate-900 headlines, `#334155` slate-700 body, `#64748B` slate-500 metadata).
+- **Indigo & Muted Violet Primary Actions:** `#4F46E5` primary action buttons, hover states `#4338CA`, and focused navigation rings.
+- **Semantic Status Signals:**
+  - **Red (`#EF4444` / `#DC2626`):** Discrepancies, arithmetic mismatches, and unreconciled exceptions.
+  - **Amber (`#F59E0B` / `#D97706`):** Warnings, split-candidate matches, and checks requiring reviewer attention.
+  - **Emerald (`#10B981` / `#059669`):** Reconciled transactions, verified checksums, and healthy controls.
+- **Persistent Left Sidebar:** Dark slate enterprise navigation (`#0F172A`) with collapsible state, active case context, status counts, and sovereign reviewer profile.
+- **Three-Panel Investigation Workspace:**
+  1. **Panel 1 (Left - Documents & Claims):** Submitted document selector, status filter tabs (All, Discrepancies, Matched, Warnings), and extracted packet claims list.
+  2. **Panel 2 (Center - Evidence Viewer):** Side-by-side document comparison canvas (Draftable style) with page navigation, zoom, synchronized scroll locking, bounding box overlays, minimap diff gutter, and bottom dual-crop raster alignment inspector.
+  3. **Panel 3 (Right - Findings & Reconciliation Inspector):** Transaction quick view with visual reconciliation match status node tree (connecting declared root claims to salary slips and bank credits), structured claim audit table, non-accusatory alternative hypotheses, and sovereign reviewer disposition controls.
 
 ---
 
@@ -47,4 +55,8 @@ python -m pytest backend/tests/ -v
 
 ---
 
-
+## Milestone Progress Matrix
+- **Prompt 00:** Project rules, environment inspection & requirements matrix — **COMPLETED**
+- **Prompt 01:** Research repositories audit & third-party notices — **COMPLETED**
+- **Prompt 02:** Working skeleton, database models & 3-Panel Enterprise Frontend — **COMPLETED**
+- **Prompt 03:** Ingestion, page rendering & background jobs — **IN PROGRESS**

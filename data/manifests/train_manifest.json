@@ -1,0 +1,116 @@
+[
+  {
+    "reference_number": "LOAN-2026-TR01",
+    "applicant_name": "Rajesh K. Sharma",
+    "declared_employer": "Tata Consultancy Services Ltd",
+    "declared_gross": 120000,
+    "declared_net": 95000,
+    "files": {
+      "application": "application_form.pdf",
+      "salary_slips": [
+        "salary_slip_m1.pdf",
+        "salary_slip_m2.pdf",
+        "salary_slip_m3.pdf"
+      ],
+      "bank_statement": "bank_statement_3mo.pdf"
+    },
+    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR01",
+    "scenario": "CLEAN_CONSISTENT",
+    "description": "Verified baseline: TCS corporate payroll matching application declaration exactly."
+  },
+  {
+    "reference_number": "LOAN-2026-TR02",
+    "applicant_name": "Priya N. Iyer",
+    "declared_employer": "Infosys Technologies Ltd",
+    "declared_gross": 85000,
+    "declared_net": 68000,
+    "files": {
+      "application": "application_form.pdf",
+      "salary_slips": [
+        "salary_slip_m1.pdf",
+        "salary_slip_m2.pdf",
+        "salary_slip_m3.pdf"
+      ],
+      "bank_statement": "bank_statement_3mo.pdf"
+    },
+    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR02",
+    "scenario": "CLEAN_CONSISTENT",
+    "description": "Clean consistent case with month-end credit schedule."
+  },
+  {
+    "reference_number": "LOAN-2026-TR03",
+    "applicant_name": "Ankit Verma",
+    "declared_employer": "Reliance Jio Infocomm Ltd",
+    "declared_gross": 110000,
+    "declared_net": 88000,
+    "files": {
+      "application": "application_form.pdf",
+      "salary_slips": [
+        "salary_slip_m1.pdf",
+        "salary_slip_m2.pdf",
+        "salary_slip_m3.pdf"
+      ],
+      "bank_statement": "bank_statement_3mo.pdf"
+    },
+    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR03",
+    "scenario": "LEGITIMATE_SPLIT_PAYROLL",
+    "description": "Legitimate split payroll: \u20b955k base + \u20b933k performance allowance sums to \u20b988k net."
+  },
+  {
+    "reference_number": "LOAN-2026-TR04",
+    "applicant_name": "Sneha Patel",
+    "declared_employer": "HDFC Bank Ltd",
+    "declared_gross": 95000,
+    "declared_net": 76000,
+    "files": {
+      "application": "application_form.pdf",
+      "salary_slips": [
+        "salary_slip_m1.pdf",
+        "salary_slip_m2.pdf",
+        "salary_slip_m3.pdf"
+      ],
+      "bank_statement": "bank_statement_3mo.pdf"
+    },
+    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR04",
+    "scenario": "SALARY_INFLATION_MISMATCH",
+    "description": "Income discrepancy: Declares \u20b976k net, bank only reflects \u20b945k credit (gap of \u20b931k)."
+  },
+  {
+    "reference_number": "LOAN-2026-TR05",
+    "applicant_name": "Mohammed Faizan",
+    "declared_employer": "Wipro Enterprises Ltd",
+    "declared_gross": 140000,
+    "declared_net": 110000,
+    "files": {
+      "application": "application_form.pdf",
+      "salary_slips": [
+        "salary_slip_m1.pdf",
+        "salary_slip_m2.pdf",
+        "salary_slip_m3.pdf"
+      ],
+      "bank_statement": "bank_statement_3mo.pdf"
+    },
+    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR05",
+    "scenario": "EMPLOYER_ENTITY_MISMATCH",
+    "description": "Employer mismatch: Declares Wipro, but payslip and bank credit name Alpha Logistics."
+  },
+  {
+    "reference_number": "LOAN-2026-TR06",
+    "applicant_name": "Kavita Deshmukh",
+    "declared_employer": "Mahindra & Mahindra Ltd",
+    "declared_gross": 100000,
+    "declared_net": 82000,
+    "files": {
+      "application": "application_form.pdf",
+      "salary_slips": [
+        "salary_slip_m1.pdf",
+        "salary_slip_m2.pdf",
+        "salary_slip_m3.pdf"
+      ],
+      "bank_statement": "bank_statement_3mo.pdf"
+    },
+    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR06",
+    "scenario": "PROMPT_INJECTION_TEXT_LAYER",
+    "description": "Adversarial security check: White-on-white text layer prompt injection payload embedded."
+  }
+]

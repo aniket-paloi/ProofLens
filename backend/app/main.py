@@ -27,7 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-from backend.app.routers import health, cases, runs, reviews, audit
+from backend.app.routers import health, cases, runs, reviews, audit, extensions
 
 app.include_router(health.router)
 app.include_router(cases.router, prefix=settings.API_PREFIX)
@@ -35,6 +35,7 @@ app.include_router(cases.page_router, prefix=settings.API_PREFIX)
 app.include_router(runs.router, prefix=settings.API_PREFIX)
 app.include_router(reviews.router, prefix=settings.API_PREFIX)
 app.include_router(audit.router, prefix=settings.API_PREFIX)
+app.include_router(extensions.router, prefix=settings.API_PREFIX)
 
 @app.get("/")
 def root():

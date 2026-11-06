@@ -1,0 +1,40 @@
+[
+  {
+    "reference_number": "LOAN-2026-VA01",
+    "applicant_name": "Arjun V. Nair",
+    "declared_employer": "Larsen & Toubro Infotech",
+    "declared_gross": 130000,
+    "declared_net": 105000,
+    "files": {
+      "application": "application_form.pdf",
+      "salary_slips": [
+        "salary_slip_m1.pdf",
+        "salary_slip_m2.pdf",
+        "salary_slip_m3.pdf"
+      ],
+      "bank_statement": "bank_statement_3mo.pdf"
+    },
+    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-VA01",
+    "scenario": "CLEAN_CONSISTENT",
+    "description": "Validation clean baseline case."
+  },
+  {
+    "reference_number": "LOAN-2026-VA02",
+    "applicant_name": "Ritu Singhania",
+    "declared_employer": "Kotak Mahindra Prime",
+    "declared_gross": 115000,
+    "declared_net": 92000,
+    "files": {
+      "application": "application_form.pdf",
+      "salary_slips": [
+        "salary_slip_m1.pdf",
+        "salary_slip_m2.pdf",
+        "salary_slip_m3.pdf"
+      ],
+      "bank_statement": "bank_statement_3mo.pdf"
+    },
+    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-VA02",
+    "scenario": "FONT_BASELINE_DISPLACEMENT",
+    "description": "Forensic baseline anomaly: Payslip Net Payable digit baseline is visibly displaced by 3.5px."
+  }
+]

@@ -39,3 +39,8 @@ storage/checkpoints/*
 .DS_Store
 Thumbs.db
 
+
+*.db-shm
+*.db-wal
+prooflens.db-shm
+prooflens.db-wal

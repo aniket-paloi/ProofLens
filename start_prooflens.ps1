@@ -1,6 +1,6 @@
 # ProofLens One-Click Launcher for PowerShell
 Write-Host "=======================================================" -ForegroundColor Cyan
-Write-Host "       ProofLens — Investigation Workspace" -ForegroundColor White
+Write-Host "       ProofLens - Investigation Workspace" -ForegroundColor White
 Write-Host "=======================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -21,4 +21,3 @@ Start-Process "http://127.0.0.1:5173/"
 
 Write-Host ""
 Write-Host "Both servers are running! To stop, close the two terminal windows." -ForegroundColor Cyan
-

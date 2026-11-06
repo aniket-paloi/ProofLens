@@ -1,0 +1,21 @@
+{
+  "specimen_id": "SIM-27f23ba6",
+  "scenario_id": "SCN_SALARY_INFLATION",
+  "created_at": "2026-11-06T06:03:27.946415+00:00",
+  "isolated": true,
+  "ground_truth": {
+    "is_altered": true,
+    "altered_field": "net_salary",
+    "original_value": 50000.0,
+    "altered_value": 90000.0,
+    "inflation_amount": 40000.0,
+    "synthetic_font_offset_px": 3.2,
+    "bbox_normalized": [
+      0.35,
+      0.6,
+      0.38,
+      0.75
+    ]
+  },
+  "status": "SPECIMEN_SYNTHESIZED"
+}

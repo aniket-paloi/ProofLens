@@ -1,0 +1,14 @@
+{
+  "specimen_id": "SIM-fba58869",
+  "scenario_id": "SCN_LEDGER_SHIFT",
+  "created_at": "2026-11-06T06:03:27.947707+00:00",
+  "isolated": true,
+  "ground_truth": {
+    "is_altered": true,
+    "ledger_type": "RUNNING_BALANCE",
+    "starting_balance": 100000.0,
+    "unreconciled_discrepancy": 25000.0,
+    "failing_row_index": 14
+  },
+  "status": "SPECIMEN_SYNTHESIZED"
+}

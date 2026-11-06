@@ -7,6 +7,7 @@ from backend.app.models.field import Field, FieldRevision
 from backend.app.models.finding import Finding, ReviewAction
 from backend.app.schemas.field import FieldRevisionCreate, FieldRevisionResponse
 from backend.app.schemas.finding import ReviewActionCreate, ReviewActionResponse
+from backend.app.financial.corrections import propagate_field_correction
 
 router = APIRouter(tags=["Reviewer Corrections & Dispositions"])
 
@@ -57,6 +58,9 @@ def create_field_revision(
     db.add(revision)
     db.commit()
     db.refresh(revision)
+
+    # Propagate revision to dependent claims and recompute checks
+    propagate_field_correction(db=db, field_id=field_id, new_value=rev_in.new_value, actor_id=rev_in.actor_id)
     
     # Audit log with case context
     case_id = f.run.case_id if f.run else "unknown_case"
