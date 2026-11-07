@@ -1,6 +1,6 @@
 # ProofLens — Final blueprint and Antigravity implementation prompts
 
-Prepared for Siddharth Balu Jamdhade. Final research review: 3 November 2026.
+Prepared for Aniket Paloi. Final research review: 3 November 2026.
 
 ## Final decision
 

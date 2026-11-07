@@ -36,7 +36,7 @@ def test_case_lifecycle_api(client):
     # 1. Create a case
     create_res = client.post("/api/cases", json={
         "reference_number": "LOAN-DEMO-2026",
-        "applicant_name": "Siddharth Jamdhade"
+        "applicant_name": "Aniket Paloi"
     })
     assert create_res.status_code == 201
     case_data = create_res.json()
@@ -46,7 +46,7 @@ def test_case_lifecycle_api(client):
     # 2. Get the case
     get_res = client.get(f"/api/cases/{case_id}")
     assert get_res.status_code == 200
-    assert get_res.json()["applicant_name"] == "Siddharth Jamdhade"
+    assert get_res.json()["applicant_name"] == "Aniket Paloi"
 
     # 3. Check audit trail
     audit_res = client.get(f"/api/cases/{case_id}/audit")

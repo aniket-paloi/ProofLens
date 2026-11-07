@@ -28,7 +28,7 @@ def test_case_creation_and_audit(db_session):
     # 1. Create Case
     test_case = Case(
         reference_number="TEST-LOAN-001",
-        applicant_name="Siddharth Jamdhade",
+        applicant_name="Aniket Paloi",
         status="ACTIVE"
     )
     db_session.add(test_case)

@@ -17,7 +17,7 @@ Meet **ProofLens**: an evidence-first, reviewer-controlled document investigatio
 ### On Screen Action:
 1. Show the **Dashboard Overview** at `http://127.0.0.1:5173/`:
    - Point out the Thoropass-inspired compliance metrics, framework health, and active cases queue.
-   - Open case `LOAN-2026-TE01` (Siddharth B. Jamdhade).
+   - Open case `LOAN-2026-TE01` (Aniket Paloi).
 
 ---
 

@@ -6,7 +6,7 @@ interface HeaderProps {
   isReady: boolean;
 }
 
-export const Header: React.FC<HeaderProps> = ({ reviewerName = "Siddharth", isReady }) => {
+export const Header: React.FC<HeaderProps> = ({ reviewerName = "Aniket", isReady }) => {
   return (
     <header className="w-full max-w-6xl mx-auto pt-8 pb-4 px-6 flex items-center justify-between">
       <div>

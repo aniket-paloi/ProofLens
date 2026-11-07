@@ -10,7 +10,7 @@ export const DossierView: React.FC = () => {
   const availableDossiers = [
     {
       id: 'dossier_03d964c9-7a1f-4d7f-9ed4-5693be5844cb',
-      title: 'Dossier • Case LOAN-2026-0891 (Siddharth B. Jamdhade)',
+      title: 'Dossier • Case LOAN-2026-0891 (Aniket Paloi)',
       pdfFilename: 'dossier_03d964c9-7a1f-4d7f-9ed4-5693be5844cb.pdf',
       jsonFilename: 'manifest_03d964c9-7a1f-4d7f-9ed4-5693be5844cb.json',
       date: '07-NOV-2026',

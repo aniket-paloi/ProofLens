@@ -201,7 +201,7 @@ def get_12_curated_packet_definitions() -> List[PacketCaseDef]:
         # --- TEST SPLIT (4 Cases - Held Out for Blind Benchmark) ---
         PacketCaseDef(
             reference_number="LOAN-2026-TE01",
-            applicant_name="Siddharth B. Jamdhade",
+            applicant_name="Aniket Paloi",
             employer_declared="Apex FinTech Labs Pvt Ltd",
             employer_actual="Apex FinTech Labs Pvt Ltd",
             pan_number="IKSPJ9911I",

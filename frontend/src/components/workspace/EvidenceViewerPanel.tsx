@@ -165,7 +165,7 @@ export const EvidenceViewerPanel: React.FC<EvidenceViewerPanelProps> = ({
                   PRIMARY
                 </span>
                 <span className="font-semibold text-[#18181B] truncate max-w-[200px]">
-                  {activeClaim?.sourceDoc || 'Application_Form_Siddharth.pdf'}
+                  {activeClaim?.sourceDoc || 'Application_Form_Aniket.pdf'}
                 </span>
               </div>
               <div className="flex items-center space-x-2">
@@ -187,7 +187,7 @@ export const EvidenceViewerPanel: React.FC<EvidenceViewerPanelProps> = ({
                   Credit Application Form
                 </div>
                 <div className="text-[11px] text-neutral-500 font-sans mt-0.5">
-                  Reference: LOAN-2026-0891 • Applicant: Siddharth B. Jamdhade
+                  Reference: LOAN-2026-0891 • Applicant: Aniket Paloi
                 </div>
               </div>
 

@@ -20,7 +20,7 @@ import { X } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [activeView, setActiveView] = useState<AppView>('landing');
-  const [reviewerName, setReviewerName] = useState<string>('Siddharth B. Jamdhade');
+  const [reviewerName, setReviewerName] = useState<string>('Aniket Paloi');
   const [, setActiveUser] = useState<StoredUser | null>(null);
   const [cases, setCases] = useState<Case[]>([]);
   const [activeCaseId, setActiveCaseId] = useState<string | null>(null);
@@ -40,7 +40,7 @@ export const App: React.FC = () => {
   const [packetDocuments, setPacketDocuments] = useState<PacketDocument[]>([
     {
       id: 'doc-app-01',
-      name: 'Application_Form_Siddharth.pdf',
+      name: 'Application_Form_Aniket.pdf',
       type: 'APPLICATION_FORM',
       pages: 2,
       size: '242 KB',
@@ -84,7 +84,7 @@ export const App: React.FC = () => {
       category: 'INCOME',
       declaredValue: '₹90,000.00',
       extractedValue: '₹42,000.00',
-      sourceDoc: 'Application_Form_Siddharth.pdf',
+      sourceDoc: 'Application_Form_Aniket.pdf',
       targetDoc: 'Bank_Statement_HDFC_3Mo.pdf',
       pageNumber: 1,
       status: 'DISCREPANCY',
@@ -112,7 +112,7 @@ export const App: React.FC = () => {
       category: 'IDENTITY',
       declaredValue: 'Apex FinTech Labs Pvt Ltd',
       extractedValue: 'APEX FIN TECH LABS PVT',
-      sourceDoc: 'Application_Form_Siddharth.pdf',
+      sourceDoc: 'Application_Form_Aniket.pdf',
       targetDoc: 'Salary_Slip_Month1.pdf',
       pageNumber: 1,
       status: 'MATCHED',
@@ -125,8 +125,8 @@ export const App: React.FC = () => {
       category: 'TEXT_LAYER',
       declaredValue: 'Visual OCR Pass',
       extractedValue: '1.1px Alignment Offset',
-      sourceDoc: 'Application_Form_Siddharth.pdf',
-      targetDoc: 'Application_Form_Siddharth.pdf',
+      sourceDoc: 'Application_Form_Aniket.pdf',
+      targetDoc: 'Application_Form_Aniket.pdf',
       pageNumber: 1,
       status: 'MATCHED',
       summary: 'No invisible text layers or white-on-white prompt injection keywords detected. Font baselines match expected scan geometries.',
@@ -164,7 +164,7 @@ export const App: React.FC = () => {
       const mockCase: Case = {
         id: 'case-demo-01',
         reference_number: 'LOAN-2026-0891',
-        applicant_name: 'Siddharth B. Jamdhade',
+        applicant_name: 'Aniket Paloi',
         status: 'ACTIVE',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -556,7 +556,7 @@ export const App: React.FC = () => {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Siddharth B. Jamdhade"
+                  placeholder="e.g. Aniket Paloi"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   className="w-full text-xs px-4 py-3 rounded-2xl bg-[#F4F4F2] border border-[#E8E8E6] text-[#18181B] focus:outline-none focus:ring-1 focus:ring-[#121212]"

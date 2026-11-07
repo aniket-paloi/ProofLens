@@ -17,7 +17,7 @@ def test_full_document_pipeline_e2e():
         ref_num = f"E2E-CASE-{os.urandom(4).hex().upper()}"
         res = client.post("/api/cases", json={
             "reference_number": ref_num,
-            "applicant_name": "Siddharth B. Jamdhade"
+            "applicant_name": "Aniket Paloi"
         })
         assert res.status_code == 201
         case_data = res.json()
@@ -28,7 +28,7 @@ def test_full_document_pipeline_e2e():
         doc = fitz.open()
         page = doc.new_page()
         page.insert_text((50, 72), "Credit Application Form", fontsize=18)
-        page.insert_text((50, 100), "Applicant: Siddharth B. Jamdhade", fontsize=11)
+        page.insert_text((50, 100), "Applicant: Aniket Paloi", fontsize=11)
         page.insert_text((50, 120), "Employer: Apex FinTech Labs Pvt Ltd", fontsize=11)
         page.insert_text((50, 140), "Monthly Gross Income: 90000.00", fontsize=11)
         page.insert_text((50, 160), "Net In-Hand Salary: 75000.00", fontsize=11)

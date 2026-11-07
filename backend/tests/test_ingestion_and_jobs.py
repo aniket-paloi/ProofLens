@@ -31,13 +31,13 @@ def test_multi_document_upload_and_validation(client):
     # 1. Create a Case
     case_res = client.post("/api/cases", json={
         "reference_number": "LOAN-INGEST-001",
-        "applicant_name": "Siddharth Jamdhade"
+        "applicant_name": "Aniket Paloi"
     })
     assert case_res.status_code == 201
     case_id = case_res.json()["id"]
 
     # 2. Create synthetic PDFs: 1 salary slip, 1 bank statement
-    salary_pdf = create_synthetic_pdf(["Acme Corp Salary Slip\nApplicant: Siddharth Jamdhade\nNet Salary: 75,000 INR"])
+    salary_pdf = create_synthetic_pdf(["Acme Corp Salary Slip\nApplicant: Aniket Paloi\nNet Salary: 75,000 INR"])
     bank_pdf = create_synthetic_pdf(["State Bank Statement\nAccount: 123456789\nBalance: 150,000 INR"])
 
     # 3. Upload both documents

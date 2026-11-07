@@ -16,9 +16,9 @@ interface LoginPageProps {
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToLanding }) => {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
-  const [email, setEmail] = useState('siddharth.reviewer@prooflens.local');
+  const [email, setEmail] = useState('aniket.paloi@prooflens.local');
   const [password, setPassword] = useState('••••••••••••');
-  const [fullName, setFullName] = useState('Siddharth B. Jamdhade');
+  const [fullName, setFullName] = useState('Aniket Paloi');
   const [role, setRole] = useState('Principal Sovereign Reviewer');
   const [organization, setOrganization] = useState('Sovereign Underwriting Systems');
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToLa
 
       const match = registeredUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
       const activeUser: StoredUser = match || {
-        name: fullName || 'Siddharth B. Jamdhade',
+        name: fullName || 'Aniket Paloi',
         email,
         role: role || 'Lead Underwriting Officer',
         organization: organization || 'Sovereign Underwriting Labs',
@@ -88,8 +88,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToLa
 
   const handleGuestLogin = () => {
     const guestUser: StoredUser = {
-      name: 'Siddharth B. Jamdhade (Sovereign Lead)',
-      email: 'siddharth.lead@prooflens.local',
+      name: 'Aniket Paloi (Sovereign Lead)',
+      email: 'aniket.paloi@prooflens.local',
       role: 'Sovereign Investigation Lead',
       organization: 'Underwriting Forensics Guild',
       registeredAt: new Date().toISOString(),
@@ -226,7 +226,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToLa
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="e.g. Siddharth B. Jamdhade"
+                    placeholder="e.g. Aniket Paloi"
                     className="w-full text-xs px-4 py-2.5 rounded-2xl bg-[#F4F4F2] border border-[#E8E8E6] text-[#18181B] focus:outline-none focus:ring-1 focus:ring-[#121212]"
                   />
                   <User className="w-4 h-4 text-neutral-400 absolute right-3.5 top-3" />
@@ -243,7 +243,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToLa
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="e.g. s.jamdhade@underwriting.com"
+                    placeholder="e.g. aniket.paloi@underwriting.com"
                     className="w-full text-xs px-4 py-2.5 rounded-2xl bg-[#F4F4F2] border border-[#E8E8E6] text-[#18181B] focus:outline-none focus:ring-1 focus:ring-[#121212]"
                   />
                   <Mail className="w-4 h-4 text-neutral-400 absolute right-3.5 top-3" />
@@ -296,7 +296,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToLa
               onClick={handleGuestLogin}
               className="text-xs font-semibold text-neutral-600 hover:text-black transition-colors"
             >
-              Instant Sovereign Demo Access (Siddharth B. Jamdhade) →
+              Instant Sovereign Demo Access (Aniket Paloi) →
             </button>
           </div>
         </div>

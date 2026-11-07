@@ -156,7 +156,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp, onOpenLogi
         {/* Bottom Banner */}
         <div className="mt-16 pt-8 border-t border-[#E8E8E6] flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500">
           <div>ProofLens Enterprise Investigation Workspace • Version 0.3.0</div>
-          <div className="mt-2 sm:mt-0 font-medium">Prepared for Siddharth Balu Jamdhade • 2026</div>
+          <div className="mt-2 sm:mt-0 font-medium">Prepared for Aniket Paloi • 2026</div>
         </div>
       </main>
     </div>

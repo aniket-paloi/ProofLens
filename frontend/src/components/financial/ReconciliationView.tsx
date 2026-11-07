@@ -19,7 +19,7 @@ export const ReconciliationView: React.FC = () => {
               financial reconciliation.
             </h1>
             <p className="text-xs text-neutral-600 mt-1 max-w-2xl leading-relaxed">
-              Aligns typed financial claims across application declarations, 3 salary slips, and covering bank statements. 
+              Aligns typed financial claims across application declarations, 3 salary slips, and covering bank statements.
               Calculates candidate employer payroll matches with split-payment detection and running balance tracking using Python <code className="font-mono bg-neutral-200 px-1 py-0.5 rounded">Decimal</code>.
             </p>
           </div>
@@ -78,7 +78,7 @@ export const ReconciliationView: React.FC = () => {
           </div>
 
           <p className="text-xs text-neutral-600 leading-relaxed mb-6">
-            A naive verification system would flag a ₹48,000 discrepancy between declared gross (₹90k) and initial bank credit (₹42k). 
+            A naive verification system would flag a ₹48,000 discrepancy between declared gross (₹90k) and initial bank credit (₹42k).
             ProofLens's financial intelligence identified statutory deductions (₹15k) and discovered a secondary corporate transfer of ₹33,000 two days later from the same corporate entity account.
           </p>
 

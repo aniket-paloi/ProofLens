@@ -45,7 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   activeView,
   onChangeView,
   caseReference = "LOAN-2026-0891",
-  applicantName = "Siddharth Jamdhade",
+  applicantName = "Aniket Paloi",
   discrepancyCount,
   onNewCase,
   onLogout,
