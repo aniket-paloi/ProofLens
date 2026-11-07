@@ -44,3 +44,7 @@ Thumbs.db
 *.db-wal
 prooflens.db-shm
 prooflens.db-wal
+
+.kilo/
+storage/lab/*
+!storage/lab/.gitkeep

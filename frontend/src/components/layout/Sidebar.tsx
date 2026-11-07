@@ -1,22 +1,44 @@
 import React, { useState } from 'react';
 import {
-  LayoutDashboard,
   Columns3,
-  FileText,
+  Scale,
+  Search,
+  Share2,
+  CheckSquare,
+  FileDown,
+  FolderKanban,
   ShieldCheck,
+  FlaskConical,
+  BarChart3,
   ChevronLeft,
   ChevronRight,
-  Plus,
-  Shield,
+  LogOut,
+  Home,
 } from 'lucide-react';
 
+export type AppView =
+  | 'landing'
+  | 'login'
+  | 'workspace'
+  | 'reconciliation'
+  | 'forensics'
+  | 'graph'
+  | 'coverage'
+  | 'dossier'
+  | 'documents'
+  | 'audit'
+  | 'lab'
+  | 'analytics';
+
 interface SidebarProps {
-  activeView: 'workspace' | 'dashboard' | 'documents' | 'audit';
-  onChangeView: (view: 'workspace' | 'dashboard' | 'documents' | 'audit') => void;
+  activeView: AppView;
+  onChangeView: (view: AppView) => void;
   caseReference?: string;
   applicantName?: string;
   discrepancyCount: number;
   onNewCase: () => void;
+  onLogout: () => void;
+  onGoToLanding: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -26,71 +48,105 @@ export const Sidebar: React.FC<SidebarProps> = ({
   applicantName = "Siddharth Jamdhade",
   discrepancyCount,
   onNewCase,
+  onLogout,
+  onGoToLanding,
 }) => {
   const [collapsed, setCollapsed] = useState(false);
 
-  const navItems = [
+  const mainNavItems = [
     {
       id: 'workspace' as const,
-      label: 'Investigation Workspace',
+      label: '3-Panel Workspace',
       icon: Columns3,
       badge: discrepancyCount > 0 ? `${discrepancyCount} flags` : undefined,
-      badgeColor: 'bg-red-500/20 text-red-300 border border-red-500/30',
+      badgeColor: 'bg-amber-900/40 text-amber-300 border border-amber-700/50',
     },
     {
-      id: 'dashboard' as const,
-      label: 'Reconciliation Overview',
-      icon: LayoutDashboard,
+      id: 'reconciliation' as const,
+      label: 'Financial Reconciliation',
+      icon: Scale,
+    },
+    {
+      id: 'forensics' as const,
+      label: 'Visual & Layer Forensics',
+      icon: Search,
+    },
+    {
+      id: 'graph' as const,
+      label: 'Claim & Evidence Graph',
+      icon: Share2,
+    },
+    {
+      id: 'coverage' as const,
+      label: 'Coverage Matrix',
+      icon: CheckSquare,
+    },
+    {
+      id: 'dossier' as const,
+      label: 'Dossier Exporter',
+      icon: FileDown,
     },
     {
       id: 'documents' as const,
       label: 'Document Packets',
-      icon: FileText,
+      icon: FolderKanban,
       badge: '4 files',
-      badgeColor: 'bg-slate-800 text-slate-300 border border-slate-700',
+      badgeColor: 'bg-neutral-800 text-neutral-300 border border-neutral-700',
     },
     {
       id: 'audit' as const,
       label: 'Cryptographic Audit',
       icon: ShieldCheck,
       badge: 'SHA-256',
-      badgeColor: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
+      badgeColor: 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/60',
+    },
+    {
+      id: 'lab' as const,
+      label: 'FraudSim & What-If Lab',
+      icon: FlaskConical,
+      badge: 'Bonus',
+      badgeColor: 'bg-neutral-800 text-neutral-400 border border-neutral-700',
+    },
+    {
+      id: 'analytics' as const,
+      label: 'Reviewer Feedback',
+      icon: BarChart3,
     },
   ];
 
   return (
     <aside
-      className={`h-screen bg-slate-900 text-slate-300 flex flex-col justify-between transition-all duration-200 z-30 select-none flex-shrink-0 border-r border-slate-800 ${
+      className={`h-screen bg-[#121212] text-neutral-300 flex flex-col justify-between transition-all duration-200 z-30 select-none flex-shrink-0 border-r border-neutral-800 ${
         collapsed ? 'w-16' : 'w-64'
       }`}
     >
       {/* Top Branding */}
       <div>
-        <div className="h-16 px-4 flex items-center justify-between border-b border-slate-800/80">
+        <div className="h-16 px-4 flex items-center justify-between border-b border-neutral-800">
           {!collapsed ? (
             <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-sm shadow-indigo-600/40">
-                <Shield className="w-4 h-4" />
+              <div className="w-8 h-8 rounded-full bg-white text-[#121212] flex items-center justify-center font-black text-sm">
+                P
               </div>
               <div>
                 <span className="font-bold text-base text-white tracking-tight flex items-center gap-1.5">
-                  ProofLens
-                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-mono font-normal">
+                  prooflens.
+                  <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-neutral-800 text-neutral-300 border border-neutral-700 font-mono font-normal">
                     v0.3
                   </span>
                 </span>
-                <p className="text-[10px] text-slate-400 -mt-0.5 font-medium">Evidence Workspace</p>
+                <p className="text-[10px] text-neutral-400 -mt-0.5 font-medium">Sovereign Evidence</p>
               </div>
             </div>
           ) : (
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white mx-auto shadow-sm shadow-indigo-600/40">
-              <Shield className="w-4 h-4" />
+            <div className="w-8 h-8 rounded-full bg-white text-[#121212] flex items-center justify-center font-black text-sm mx-auto">
+              P
             </div>
           )}
 
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden lg:flex w-6 h-6 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 items-center justify-center transition-colors"
+            className="hidden lg:flex w-6 h-6 rounded-md text-neutral-400 hover:text-white hover:bg-neutral-800 items-center justify-center transition-colors"
             title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {collapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
@@ -99,61 +155,49 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Active Case Context Pill */}
         {!collapsed && (
-          <div className="p-3 mx-3 mt-3 rounded-xl bg-slate-800/70 border border-slate-700/60">
-            <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-              <span className="uppercase font-semibold tracking-wider text-[10px] text-indigo-400">
-                Active Packet
+          <div className="p-3 mx-3 mt-3 rounded-2xl bg-neutral-900 border border-neutral-800">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-neutral-400">
+                ACTIVE DOSSIER
               </span>
-              <span className="font-mono text-[10px] text-slate-300">{caseReference}</span>
-            </div>
-            <div className="text-xs font-semibold text-white truncate">{applicantName}</div>
-            <div className="mt-2 pt-2 border-t border-slate-700/50 flex items-center justify-between text-[10px]">
-              <span className="text-slate-400">Loan Dossier</span>
               <button
                 onClick={onNewCase}
-                className="text-indigo-400 hover:text-indigo-300 font-medium inline-flex items-center gap-1"
+                className="text-[10px] font-semibold text-white hover:underline"
               >
-                <Plus className="w-3 h-3" />
-                <span>Switch / New</span>
+                + Switch
               </button>
+            </div>
+            <div className="font-mono text-xs font-bold text-white truncate">
+              {caseReference}
+            </div>
+            <div className="text-[11px] text-neutral-400 truncate mt-0.5">
+              {applicantName}
             </div>
           </div>
         )}
 
-        {/* Navigation Section */}
-        <nav className="p-3 space-y-1">
-          <div className={`px-2 mb-2 text-[10px] font-semibold tracking-wider uppercase text-slate-500 ${collapsed ? 'hidden' : 'block'}`}>
-            Investigations
-          </div>
-
-          {navItems.map((item) => {
-            const Icon = item.icon;
+        {/* Navigation Items */}
+        <nav className="p-2 space-y-1 mt-2 overflow-y-auto max-h-[calc(100vh-280px)] scrollbar-none">
+          {mainNavItems.map((item) => {
             const isActive = activeView === item.id;
-
+            const Icon = item.icon;
             return (
               <button
                 key={item.id}
                 onClick={() => onChangeView(item.id)}
-                className={`w-full flex items-center rounded-lg transition-all text-xs font-medium ${
-                  collapsed
-                    ? 'justify-center py-2.5 px-0'
-                    : 'justify-between px-3 py-2.5'
-                } ${
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-900/50 font-semibold'
-                    : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                    ? 'bg-white text-[#121212] font-semibold shadow-sm'
+                    : 'text-neutral-400 hover:text-white hover:bg-neutral-800/60'
                 }`}
                 title={collapsed ? item.label : undefined}
               >
-                <div className="flex items-center space-x-3 min-w-0">
-                  <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                <div className="flex items-center space-x-2.5 truncate">
+                  <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-[#121212]' : 'text-neutral-400'}`} />
                   {!collapsed && <span className="truncate">{item.label}</span>}
                 </div>
-
                 {!collapsed && item.badge && (
-                  <span
-                    className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono font-medium ${item.badgeColor}`}
-                  >
+                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${item.badgeColor}`}>
                     {item.badge}
                   </span>
                 )}
@@ -163,35 +207,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </nav>
       </div>
 
-      {/* Bottom Profile / Sovereign Indicator */}
-      <div className="p-3 border-t border-slate-800">
-        {!collapsed ? (
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2.5 px-2 py-1.5 rounded-lg bg-slate-800/40">
-              <div className="w-7 h-7 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-200">
-                SJ
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="text-xs font-semibold text-white truncate">Siddharth J.</div>
-                <div className="text-[10px] text-emerald-400 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                  Sovereign Reviewer
-                </div>
-              </div>
-            </div>
+      {/* Bottom Footer Actions */}
+      <div className="p-3 border-t border-neutral-800 space-y-1">
+        <button
+          onClick={onGoToLanding}
+          className="w-full flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium text-neutral-400 hover:text-white hover:bg-neutral-800/60 transition-colors"
+          title="Return to Public Landing Page"
+        >
+          <Home className="w-4 h-4 flex-shrink-0" />
+          {!collapsed && <span>Public Portal</span>}
+        </button>
 
-            <div className="flex items-center justify-between text-[11px] text-slate-500 px-2 pt-1">
-              <span>Zero-Accusation Core</span>
-              <span className="font-mono text-[10px]">WAL Offline</span>
-            </div>
-          </div>
-        ) : (
-          <div className="flex justify-center">
-            <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-200" title="Siddharth J. • Sovereign Reviewer">
-              SJ
-            </div>
-          </div>
-        )}
+        <button
+          onClick={onLogout}
+          className="w-full flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-medium text-neutral-400 hover:text-rose-400 hover:bg-neutral-800/60 transition-colors"
+          title="Sign Out"
+        >
+          <LogOut className="w-4 h-4 flex-shrink-0" />
+          {!collapsed && <span>Sign Out</span>}
+        </button>
       </div>
     </aside>
   );

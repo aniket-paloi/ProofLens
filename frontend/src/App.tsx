@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Case, AuditEvent } from './types';
 import * as api from './services/api';
-import { Sidebar } from './components/layout/Sidebar';
+import { Sidebar, AppView } from './components/layout/Sidebar';
 import { TopNav } from './components/layout/TopNav';
+import { LandingPage } from './components/landing/LandingPage';
+import { LoginPage } from './components/auth/LoginPage';
 import { InvestigationWorkspace } from './components/workspace/InvestigationWorkspace';
-import { DashboardOverview } from './components/dashboard/DashboardOverview';
+import { ReconciliationView } from './components/financial/ReconciliationView';
+import { ForensicsView } from './components/forensics/ForensicsView';
+import { GraphView } from './components/graph/GraphView';
+import { CoverageView } from './components/coverage/CoverageView';
+import { DossierView } from './components/dossier/DossierView';
 import { DocumentsView } from './components/documents/DocumentsView';
 import { AuditTimeline } from './components/audit/AuditTimeline';
+import { LabView } from './components/lab/LabView';
+import { AnalyticsView } from './components/analytics/AnalyticsView';
 import { PacketDocument, InvestigationClaimItem } from './components/workspace/DocumentsListPanel';
 import { X } from 'lucide-react';
 
 export const App: React.FC = () => {
+  const [activeView, setActiveView] = useState<AppView>('landing');
+  const [reviewerName, setReviewerName] = useState<string>('Siddharth B. Jamdhade');
   const [cases, setCases] = useState<Case[]>([]);
   const [activeCaseId, setActiveCaseId] = useState<string | null>(null);
   const [activeCase, setActiveCase] = useState<Case | null>(null);
   const [auditEvents, setAuditEvents] = useState<AuditEvent[]>([]);
-  const [activeView, setActiveView] = useState<'workspace' | 'dashboard' | 'documents' | 'audit'>('workspace');
   const [isBackendReady, setIsBackendReady] = useState<boolean>(true);
   const [sensitivity, setSensitivity] = useState<number>(60);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -136,10 +145,8 @@ export const App: React.FC = () => {
         selectCase(data[0].id);
       }
       setIsBackendReady(true);
-    } catch (err: any) {
-      console.warn('API connection waiting for backend start:', err.message);
+    } catch {
       setIsBackendReady(false);
-      // Fallback local case for immediate offline design exploration
       const mockCase: Case = {
         id: 'case-demo-01',
         reference_number: 'LOAN-2026-0891',
@@ -229,7 +236,7 @@ export const App: React.FC = () => {
       case_id: activeCaseId || 'case-demo-01',
       sequence_number: auditEvents.length + 1,
       action_type: `REVIEWER_${disposition}`,
-      actor_id: 'Siddharth (Sovereign Reviewer)',
+      actor_id: `${reviewerName} (Sovereign Reviewer)`,
       previous_event_hash: prevHash,
       current_event_hash: `sha256_${Math.random().toString(16).substring(2, 18)}...`,
       created_at: new Date().toISOString(),
@@ -239,38 +246,78 @@ export const App: React.FC = () => {
   };
 
   const handleTriggerRun = () => {
-    alert(`Triggered full multi-document evidence investigation pipeline for packet ${activeCase?.reference_number}`);
+    alert(`Triggered multi-document investigation run across all pages of packet ${activeCase?.reference_number}`);
   };
 
   const handleExportDossier = () => {
-    alert(`Exporting 6-Section Reproducibility Dossier (PDF & Canonical JSON) for ${activeCase?.reference_number}`);
+    setActiveView('dossier');
   };
 
   const getViewTitle = () => {
     switch (activeView) {
       case 'workspace':
         return '3-Panel Investigation Workspace';
-      case 'dashboard':
-        return 'Reconciliation & Health Overview';
+      case 'reconciliation':
+        return 'Financial Reconciliation & Claims';
+      case 'forensics':
+        return 'Visual Forensics & Layer Cross-Check';
+      case 'graph':
+        return 'Claim & Evidence Graph';
+      case 'coverage':
+        return 'Coverage Matrix & Field Revisions';
+      case 'dossier':
+        return 'Investigation Dossier Exporter';
       case 'documents':
         return 'Submitted Document Packets';
       case 'audit':
         return 'Cryptographic Audit Trail';
+      case 'lab':
+        return 'FraudSim Lab & What-If Sandbox';
+      case 'analytics':
+        return 'Reviewer Feedback Analytics';
+      default:
+        return 'Overview';
     }
   };
 
   const discrepancyCount = claims.filter((c) => c.status === 'DISCREPANCY').length;
 
+  // Render Public Landing Page
+  if (activeView === 'landing') {
+    return (
+      <LandingPage
+        onEnterApp={() => setActiveView('workspace')}
+        onOpenLogin={() => setActiveView('login')}
+      />
+    );
+  }
+
+  // Render Login Page
+  if (activeView === 'login') {
+    return (
+      <LoginPage
+        onLoginSuccess={(name) => {
+          setReviewerName(name);
+          setActiveView('workspace');
+        }}
+        onBackToLanding={() => setActiveView('landing')}
+      />
+    );
+  }
+
+  // Render Main Workspace Shell
   return (
-    <div className="flex h-screen bg-slate-50 text-slate-900 font-sans overflow-hidden">
-      {/* PERSISTENT LEFT SIDEBAR (Thoropass & Settlement Inspired) */}
+    <div className="flex h-screen bg-[#FBFBF9] text-[#18181B] font-sans overflow-hidden">
+      {/* PERSISTENT LEFT SIDEBAR */}
       <Sidebar
         activeView={activeView}
         onChangeView={setActiveView}
         caseReference={activeCase?.reference_number || 'LOAN-2026-0891'}
-        applicantName={activeCase?.applicant_name || 'Siddharth Jamdhade'}
+        applicantName={activeCase?.applicant_name || reviewerName}
         discrepancyCount={discrepancyCount}
         onNewCase={() => setIsNewCaseOpen(true)}
+        onLogout={() => setActiveView('login')}
+        onGoToLanding={() => setActiveView('landing')}
       />
 
       {/* MAIN VIEW CONTENT AREA */}
@@ -289,7 +336,7 @@ export const App: React.FC = () => {
         />
 
         {errorMsg && (
-          <div className="p-3 bg-red-50 border-b border-red-200 text-red-800 text-xs flex items-center justify-between px-6">
+          <div className="p-3 bg-rose-50 border-b border-rose-200 text-rose-800 text-xs flex items-center justify-between px-6">
             <span>{errorMsg}</span>
             <button onClick={() => setErrorMsg(null)} className="font-bold underline">Dismiss</button>
           </div>
@@ -305,20 +352,20 @@ export const App: React.FC = () => {
           />
         )}
 
-        {activeView === 'dashboard' && (
-          <DashboardOverview
-            cases={cases}
-            activeCase={activeCase}
-            onSelectCase={selectCase}
-            onOpenWorkspace={() => setActiveView('workspace')}
-            onNewCase={() => setIsNewCaseOpen(true)}
-          />
-        )}
+        {activeView === 'reconciliation' && <ReconciliationView />}
+
+        {activeView === 'forensics' && <ForensicsView />}
+
+        {activeView === 'graph' && <GraphView />}
+
+        {activeView === 'coverage' && <CoverageView />}
+
+        {activeView === 'dossier' && <DossierView />}
 
         {activeView === 'documents' && (
           <DocumentsView
             documents={packetDocuments}
-            onUploadDoc={() => alert('Opening file picker to upload source PDF to storage/originals with SHA-256 hash...')}
+            onUploadDoc={() => alert('Opening native file picker to ingest PDF into storage/originals with SHA-256 hash...')}
             onOpenWorkspace={() => setActiveView('workspace')}
           />
         )}
@@ -346,24 +393,28 @@ export const App: React.FC = () => {
             }}
           />
         )}
+
+        {activeView === 'lab' && <LabView />}
+
+        {activeView === 'analytics' && <AnalyticsView />}
       </div>
 
       {/* CREATE NEW CASE MODAL */}
       {isNewCaseOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white border border-slate-200 rounded-xl p-6 max-w-md w-full shadow-xl">
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-[#E8E8E6] rounded-3xl p-8 max-w-md w-full shadow-xl">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#E8E8E6]">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600">
-                  New Investigation Packet
+                <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                  NEW INVESTIGATION DOSSIER
                 </span>
-                <h3 className="text-base font-bold text-slate-900 mt-0.5">
-                  Create Case Dossier
+                <h3 className="text-base font-bold text-[#18181B] mt-0.5">
+                  Create Case Packet
                 </h3>
               </div>
               <button
                 onClick={() => setIsNewCaseOpen(false)}
-                className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800"
+                className="w-8 h-8 rounded-full bg-[#F4F4F2] flex items-center justify-center text-neutral-500 hover:text-black"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -371,7 +422,7 @@ export const App: React.FC = () => {
 
             <form onSubmit={handleCreateCase} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-neutral-700 mb-1">
                   Reference Code
                 </label>
                 <input
@@ -380,12 +431,12 @@ export const App: React.FC = () => {
                   placeholder="e.g. LOAN-2026-0891"
                   value={newRef}
                   onChange={(e) => setNewRef(e.target.value)}
-                  className="w-full text-xs px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                  className="w-full text-xs px-4 py-3 rounded-2xl bg-[#F4F4F2] border border-[#E8E8E6] text-[#18181B] focus:outline-none focus:ring-1 focus:ring-[#121212]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-neutral-700 mb-1">
                   Applicant Name
                 </label>
                 <input
@@ -394,22 +445,22 @@ export const App: React.FC = () => {
                   placeholder="e.g. Siddharth B. Jamdhade"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
-                  className="w-full text-xs px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                  className="w-full text-xs px-4 py-3 rounded-2xl bg-[#F4F4F2] border border-[#E8E8E6] text-[#18181B] focus:outline-none focus:ring-1 focus:ring-[#121212]"
                 />
               </div>
 
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-end space-x-2">
+              <div className="pt-3 border-t border-[#E8E8E6] flex items-center justify-end space-x-2">
                 <button
                   type="button"
                   onClick={() => setIsNewCaseOpen(false)}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200"
+                  className="px-4 py-2 rounded-full text-xs font-semibold bg-[#F4F4F2] text-neutral-600 hover:text-black"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 shadow-sm"
+                  className="px-5 py-2 rounded-full text-xs font-semibold bg-[#121212] text-white hover:bg-neutral-800 disabled:opacity-50 shadow-sm"
                 >
                   {loading ? 'Creating...' : 'Initialize Dossier'}
                 </button>
