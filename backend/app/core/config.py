@@ -10,14 +10,17 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
     
-    BASE_DIR: Path = Path(__file__).resolve().parent.parent.parent.parent
-    STORAGE_DIR: Path = BASE_DIR / "storage"
-    ORIGINALS_DIR: Path = STORAGE_DIR / "originals"
-    DERIVATIVES_DIR: Path = STORAGE_DIR / "derivatives"
-    REPORTS_DIR: Path = STORAGE_DIR / "reports"
-    CHECKPOINTS_DIR: Path = STORAGE_DIR / "checkpoints"
+    IS_VERCEL: bool = bool(os.environ.get("VERCEL"))
+    REPO_ROOT: Path = Path(__file__).resolve().parent.parent.parent.parent
+    BASE_DIR: Path = Path("/tmp/prooflens") if bool(os.environ.get("VERCEL")) else Path(__file__).resolve().parent.parent.parent.parent
     
-    DATABASE_URL: str = f"sqlite:///{BASE_DIR / 'prooflens.db'}"
+    STORAGE_DIR: Path = (Path("/tmp/prooflens") if bool(os.environ.get("VERCEL")) else Path(__file__).resolve().parent.parent.parent.parent) / "storage"
+    ORIGINALS_DIR: Path = (Path("/tmp/prooflens") if bool(os.environ.get("VERCEL")) else Path(__file__).resolve().parent.parent.parent.parent) / "storage" / "originals"
+    DERIVATIVES_DIR: Path = (Path("/tmp/prooflens") if bool(os.environ.get("VERCEL")) else Path(__file__).resolve().parent.parent.parent.parent) / "storage" / "derivatives"
+    REPORTS_DIR: Path = (Path("/tmp/prooflens") if bool(os.environ.get("VERCEL")) else Path(__file__).resolve().parent.parent.parent.parent) / "storage" / "reports"
+    CHECKPOINTS_DIR: Path = (Path("/tmp/prooflens") if bool(os.environ.get("VERCEL")) else Path(__file__).resolve().parent.parent.parent.parent) / "storage" / "checkpoints"
+    
+    DATABASE_URL: str = f"sqlite:///{(Path('/tmp/prooflens') if bool(os.environ.get('VERCEL')) else Path(__file__).resolve().parent.parent.parent.parent) / 'prooflens.db'}"
     
     # Feature capabilities
     CAPABILITIES: dict = {

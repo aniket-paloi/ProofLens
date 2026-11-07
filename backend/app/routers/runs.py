@@ -63,7 +63,11 @@ def trigger_processing_run(
     )
 
     # Dispatch to background worker
-    background_tasks.add_task(process_run, run.id)
+    if getattr(settings, "IS_VERCEL", False):
+        process_run(run.id)
+        db.refresh(run)
+    else:
+        background_tasks.add_task(process_run, run.id)
 
     return run
 
@@ -90,7 +94,11 @@ def retry_processing_run(
         payload={"run_id": run.id}
     )
 
-    background_tasks.add_task(process_run, run.id)
+    if getattr(settings, "IS_VERCEL", False):
+        process_run(run.id)
+        db.refresh(run)
+    else:
+        background_tasks.add_task(process_run, run.id)
     return run
 
 @router.get("/runs/{run_id}", response_model=ProcessingRunResponse)

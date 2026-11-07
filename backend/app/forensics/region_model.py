@@ -3,16 +3,28 @@ from pathlib import Path
 from typing import Dict, Any, Optional
 import cv2
 import numpy as np
-import torch
-import torch.nn as nn
-from torchvision import transforms
-from torchvision.models import mobilenet_v3_small
+
+try:
+    import torch
+    import torch.nn as nn
+    from torchvision import transforms
+    from torchvision.models import mobilenet_v3_small
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
 
 class RegionClassifierAdapter:
     """
     Adapter for loading and running the trained MobileNetV3 Small region classifier.
     """
     def __init__(self, checkpoint_path: Optional[str] = None):
+        if not TORCH_AVAILABLE:
+            self.device = None
+            self.checkpoint_path = checkpoint_path
+            self.model = None
+            self.transform = None
+            return
+
         self.device = torch.device("cpu")
         if checkpoint_path is None:
             checkpoint_path = os.path.join("ml", "checkpoints", "mobilenet_v3_small_region.pt")
@@ -26,8 +38,8 @@ class RegionClassifierAdapter:
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         ])
 
-    def _load_model(self) -> Optional[nn.Module]:
-        if not os.path.exists(self.checkpoint_path):
+    def _load_model(self) -> Optional[Any]:
+        if not TORCH_AVAILABLE or not os.path.exists(self.checkpoint_path):
             return None
 
         try:

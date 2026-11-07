@@ -8,7 +8,21 @@ import backend.app.models  # Register all models with Base
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Initialize SQLite tables on startup
+    # Initialize SQLite tables and storage on startup
+    if getattr(settings, "IS_VERCEL", False):
+        try:
+            import shutil
+            tmp_db = settings.BASE_DIR / "prooflens.db"
+            repo_db = settings.REPO_ROOT / "prooflens.db"
+            if repo_db.exists() and not tmp_db.exists():
+                shutil.copy2(str(repo_db), str(tmp_db))
+            
+            repo_storage = settings.REPO_ROOT / "storage"
+            if repo_storage.exists() and not (settings.STORAGE_DIR / "originals").exists():
+                shutil.copytree(str(repo_storage), str(settings.STORAGE_DIR), dirs_exist_ok=True)
+        except Exception:
+            pass
+
     Base.metadata.create_all(bind=engine)
     yield
 
