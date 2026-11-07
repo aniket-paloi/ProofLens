@@ -32,6 +32,7 @@ from backend.app.routers import health, cases, runs, reviews, audit, extensions
 app.include_router(health.router)
 app.include_router(cases.router, prefix=settings.API_PREFIX)
 app.include_router(cases.page_router, prefix=settings.API_PREFIX)
+app.include_router(cases.page_router)  # Allow direct /documents access as well
 app.include_router(runs.router, prefix=settings.API_PREFIX)
 app.include_router(reviews.router, prefix=settings.API_PREFIX)
 app.include_router(audit.router, prefix=settings.API_PREFIX)

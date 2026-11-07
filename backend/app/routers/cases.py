@@ -101,6 +101,27 @@ async def upload_documents(
             page_count=validated_meta["page_count"]
         )
         db.add(doc)
+
+        # Immediately render pages derivatives for instant viewing
+        from backend.app.ingestion.renderer import render_and_route_pages
+        try:
+            pages_meta = render_and_route_pages(str(original_dest), validated_meta["mime_type"])
+            for meta in pages_meta:
+                page = Page(
+                    id=meta["page_id"],
+                    document_id=doc.id,
+                    page_number=meta["page_number"],
+                    width_pts=meta["width_pts"],
+                    height_pts=meta["height_pts"],
+                    rotation_deg=meta["rotation_deg"],
+                    rendered_image_path=meta["rendered_image_path"],
+                    has_native_text=meta["has_native_text"]
+                )
+                db.add(page)
+            doc.page_count = len(pages_meta)
+        except Exception:
+            pass
+
         uploaded_docs.append(doc)
 
         record_audit_event(
@@ -196,3 +217,23 @@ def get_page_image(document_id: str, page_number: int, db: Session = Depends(get
         raise HTTPException(status_code=404, detail="Page render derivative not found")
 
     return FileResponse(page.rendered_image_path, media_type="image/png")
+
+@page_router.get("/{document_id}/download")
+@page_router.get("/{document_id}/file")
+def download_document(document_id: str, db: Session = Depends(get_db)):
+    doc = db.query(Document).filter(Document.id == document_id).first()
+    if not doc or not doc.original_path or not os.path.exists(doc.original_path):
+        raise HTTPException(status_code=404, detail="Document file not found")
+    return FileResponse(
+        doc.original_path,
+        media_type=doc.mime_type or "application/pdf",
+        filename=doc.filename or f"{document_id}.pdf"
+    )
+
+@page_router.get("/{document_id}", response_model=DocumentResponse)
+def get_document_details(document_id: str, db: Session = Depends(get_db)):
+    doc = db.query(Document).filter(Document.id == document_id).first()
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found")
+    return doc
+

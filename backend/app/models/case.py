@@ -59,3 +59,7 @@ class Page(Base):
     document = relationship("Document", back_populates="pages")
     fields = relationship("Field", back_populates="page")
 
+    @property
+    def rendered_image_url(self) -> str:
+        return f"/api/documents/{self.document_id}/pages/{self.page_number}/image"
+

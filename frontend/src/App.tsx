@@ -4,7 +4,7 @@ import * as api from './services/api';
 import { Sidebar, AppView } from './components/layout/Sidebar';
 import { TopNav } from './components/layout/TopNav';
 import { LandingPage } from './components/landing/LandingPage';
-import { LoginPage } from './components/auth/LoginPage';
+import { LoginPage, StoredUser } from './components/auth/LoginPage';
 import { InvestigationWorkspace } from './components/workspace/InvestigationWorkspace';
 import { ReconciliationView } from './components/financial/ReconciliationView';
 import { ForensicsView } from './components/forensics/ForensicsView';
@@ -21,6 +21,7 @@ import { X } from 'lucide-react';
 export const App: React.FC = () => {
   const [activeView, setActiveView] = useState<AppView>('landing');
   const [reviewerName, setReviewerName] = useState<string>('Siddharth B. Jamdhade');
+  const [, setActiveUser] = useState<StoredUser | null>(null);
   const [cases, setCases] = useState<Case[]>([]);
   const [activeCaseId, setActiveCaseId] = useState<string | null>(null);
   const [activeCase, setActiveCase] = useState<Case | null>(null);
@@ -33,9 +34,10 @@ export const App: React.FC = () => {
   const [newName, setNewName] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [selectedWorkspaceDocId, setSelectedWorkspaceDocId] = useState<string | null>(null);
 
-  // Mock Packet Documents for loan packet investigation
-  const [packetDocuments] = useState<PacketDocument[]>([
+  // Packet Documents for loan packet investigation
+  const [packetDocuments, setPacketDocuments] = useState<PacketDocument[]>([
     {
       id: 'doc-app-01',
       name: 'Application_Form_Siddharth.pdf',
@@ -132,8 +134,20 @@ export const App: React.FC = () => {
     },
   ]);
 
-  // Initial load
+  // Initial load: check persistent session & load cases
   useEffect(() => {
+    try {
+      const stored = localStorage.getItem('prooflens_active_user');
+      if (stored) {
+        const u: StoredUser = JSON.parse(stored);
+        if (u && u.name) {
+          setActiveUser(u);
+          setReviewerName(u.name);
+        }
+      }
+    } catch {
+      // Ignore parse errors
+    }
     loadCases();
   }, []);
 
@@ -168,9 +182,51 @@ export const App: React.FC = () => {
       setActiveCase(c);
       const audit = await api.fetchCaseAudit(caseId);
       setAuditEvents(audit);
+
+      // Map real documents if present
+      if (c.documents && c.documents.length > 0) {
+        const mapped: PacketDocument[] = c.documents.map((d) => ({
+          id: d.id,
+          name: d.filename,
+          type: (d.classified_type as any) || 'APPLICATION_FORM',
+          pages: d.page_count || 1,
+          size: `${Math.round(d.file_size_bytes / 1024)} KB`,
+          status: 'PROCESSED',
+          checksum: d.sha256_hash,
+        }));
+        setPacketDocuments(mapped);
+      }
     } catch {
       const found = cases.find((c) => c.id === caseId);
       if (found) setActiveCase(found);
+    }
+  };
+
+  const handleUploadFiles = async (files: File[]) => {
+    if (!activeCaseId) {
+      setErrorMsg('Please select or create an active case before uploading files.');
+      return;
+    }
+    setLoading(true);
+    setErrorMsg(null);
+    try {
+      const uploadedDocs = await api.uploadDocuments(activeCaseId, files);
+      const newDocs: PacketDocument[] = uploadedDocs.map((d: any) => ({
+        id: d.id,
+        name: d.filename,
+        type: d.classified_type || 'APPLICATION_FORM',
+        pages: d.page_count || 1,
+        size: `${Math.round(d.file_size_bytes / 1024)} KB`,
+        status: 'PROCESSED',
+        checksum: d.sha256_hash,
+      }));
+      setPacketDocuments((prev) => [...newDocs, ...prev]);
+      const audit = await api.fetchCaseAudit(activeCaseId);
+      setAuditEvents(audit);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Failed to upload document');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -210,7 +266,7 @@ export const App: React.FC = () => {
 
   const handleReview = async (claimId: string, disposition: string, reason: string) => {
     try {
-      await api.submitReview(claimId, { disposition, reason });
+      await api.submitReview(claimId, { disposition, reason, actor_id: reviewerName });
     } catch {
       console.log('Applied review disposition locally:', disposition);
     }
@@ -245,38 +301,84 @@ export const App: React.FC = () => {
     setAuditEvents((prev) => [newAudit, ...prev]);
   };
 
-  const handleTriggerRun = () => {
-    alert(`Triggered multi-document investigation run across all pages of packet ${activeCase?.reference_number}`);
+  const handleTriggerRun = async () => {
+    if (!activeCaseId) return;
+    try {
+      const runRes = await api.triggerRun(activeCaseId);
+      setTimeout(async () => {
+        try {
+          const claimsRes = await api.fetchRunClaims(runRes.id);
+          if (claimsRes && claimsRes.length > 0) {
+            const mappedClaims: InvestigationClaimItem[] = claimsRes.map((c: any) => ({
+              id: c.id,
+              title: `${c.claim_type}: ${c.subject}`,
+              category: (c.claim_type as any) || 'TRANSACTION',
+              declaredValue: c.amount ? `₹${c.amount}` : c.basis,
+              extractedValue: c.basis,
+              sourceDoc: packetDocuments[0]?.name || 'Document',
+              targetDoc: packetDocuments[1]?.name || 'Statement',
+              pageNumber: 1,
+              status: c.status === 'EXCEPTION' ? 'DISCREPANCY' : 'MATCHED',
+              summary: c.basis,
+              coordinates: { page: 1, ymin: 0.1, xmin: 0.1, ymax: 0.2, xmax: 0.5 },
+            }));
+            setClaims(mappedClaims);
+          }
+          const audit = await api.fetchCaseAudit(activeCaseId);
+          setAuditEvents(audit);
+        } catch {
+          // Keep current claims
+        }
+      }, 1000);
+    } catch {
+      // Local fallback
+    }
+  };
+
+  const handleVerifyCheckpoint = async () => {
+    if (!activeCaseId) return;
+    return await api.verifyCaseAudit(activeCaseId);
+  };
+
+  const handleExportCheckpoint = async () => {
+    if (!activeCaseId) return;
+    return await api.fetchCaseCheckpoint(activeCaseId);
   };
 
   const handleExportDossier = () => {
     setActiveView('dossier');
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('prooflens_active_user');
+    setActiveUser(null);
+    setActiveView('login');
+  };
+
   const getViewTitle = () => {
     switch (activeView) {
       case 'workspace':
-        return '3-Panel Investigation Workspace';
+        return '3-panel comparator';
       case 'reconciliation':
-        return 'Financial Reconciliation & Claims';
+        return 'reconciliation & claims';
       case 'forensics':
-        return 'Visual Forensics & Layer Cross-Check';
+        return 'visual forensics & baselines';
       case 'graph':
-        return 'Claim & Evidence Graph';
+        return 'evidence provenance graph';
       case 'coverage':
-        return 'Coverage Matrix & Field Revisions';
+        return 'verification coverage';
       case 'dossier':
-        return 'Investigation Dossier Exporter';
+        return 'investigation dossier';
       case 'documents':
-        return 'Submitted Document Packets';
+        return 'submitted packets';
       case 'audit':
-        return 'Cryptographic Audit Trail';
+        return 'cryptographic timeline';
       case 'lab':
-        return 'FraudSim Lab & What-If Sandbox';
+        return 'fraudsim laboratory';
       case 'analytics':
-        return 'Reviewer Feedback Analytics';
+        return 'reviewer telemetry';
       default:
-        return 'Overview';
+        return 'overview';
     }
   };
 
@@ -296,8 +398,9 @@ export const App: React.FC = () => {
   if (activeView === 'login') {
     return (
       <LoginPage
-        onLoginSuccess={(name) => {
-          setReviewerName(name);
+        onLoginSuccess={(user) => {
+          setActiveUser(user);
+          setReviewerName(user.name);
           setActiveView('workspace');
         }}
         onBackToLanding={() => setActiveView('landing')}
@@ -316,7 +419,7 @@ export const App: React.FC = () => {
         applicantName={activeCase?.applicant_name || reviewerName}
         discrepancyCount={discrepancyCount}
         onNewCase={() => setIsNewCaseOpen(true)}
-        onLogout={() => setActiveView('login')}
+        onLogout={handleLogout}
         onGoToLanding={() => setActiveView('landing')}
       />
 
@@ -329,10 +432,13 @@ export const App: React.FC = () => {
           isBackendReady={isBackendReady}
           onTriggerRun={handleTriggerRun}
           onExportDossier={handleExportDossier}
+          onVerifyCheckpoint={handleVerifyCheckpoint}
           sensitivity={sensitivity}
           onSensitivityChange={setSensitivity}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
+          reviewerName={reviewerName}
+          onLogout={handleLogout}
         />
 
         {errorMsg && (
@@ -348,7 +454,9 @@ export const App: React.FC = () => {
             documents={packetDocuments}
             claims={claims}
             onSubmitReview={handleReview}
-            onUploadDoc={() => setActiveView('documents')}
+            onUploadDocFiles={handleUploadFiles}
+            onOpenDocumentsView={() => setActiveView('documents')}
+            initialSelectedDocId={selectedWorkspaceDocId}
           />
         )}
 
@@ -365,8 +473,12 @@ export const App: React.FC = () => {
         {activeView === 'documents' && (
           <DocumentsView
             documents={packetDocuments}
-            onUploadDoc={() => alert('Opening native file picker to ingest PDF into storage/originals with SHA-256 hash...')}
-            onOpenWorkspace={() => setActiveView('workspace')}
+            onUploadDoc={handleUploadFiles}
+            caseReference={activeCase?.reference_number || 'LOAN-2026-0891'}
+            onOpenWorkspace={(docId) => {
+              if (docId) setSelectedWorkspaceDocId(docId);
+              setActiveView('workspace');
+            }}
           />
         )}
 
@@ -376,7 +488,8 @@ export const App: React.FC = () => {
             onVerify={async () => {
               if (activeCaseId) {
                 try {
-                  return await api.verifyCaseAudit(activeCaseId);
+                  const res = await api.verifyCaseAudit(activeCaseId);
+                  return res;
                 } catch {
                   return {
                     chain_valid: true,
@@ -391,6 +504,7 @@ export const App: React.FC = () => {
                 total_events: auditEvents.length,
               };
             }}
+            onExportCheckpoint={handleExportCheckpoint}
           />
         )}
 

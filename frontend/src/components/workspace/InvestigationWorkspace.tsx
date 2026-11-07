@@ -11,16 +11,22 @@ interface InvestigationWorkspaceProps {
   documents: PacketDocument[];
   claims: InvestigationClaimItem[];
   onSubmitReview: (claimId: string, disposition: string, reason: string) => Promise<void>;
-  onUploadDoc: () => void;
+  onUploadDocFiles?: (files: File[]) => Promise<void>;
+  onOpenDocumentsView?: () => void;
+  initialSelectedDocId?: string | null;
 }
 
 export const InvestigationWorkspace: React.FC<InvestigationWorkspaceProps> = ({
   documents,
   claims,
   onSubmitReview,
-  onUploadDoc,
+  onUploadDocFiles,
+  onOpenDocumentsView,
+  initialSelectedDocId,
 }) => {
-  const [selectedDocId, setSelectedDocId] = useState<string | null>(documents[0]?.id || null);
+  const [selectedDocId, setSelectedDocId] = useState<string | null>(
+    initialSelectedDocId || documents[0]?.id || null
+  );
   const [selectedClaim, setSelectedClaim] = useState<InvestigationClaimItem | null>(claims[0] || null);
 
   const handleSelectClaim = (claim: InvestigationClaimItem) => {
@@ -28,7 +34,7 @@ export const InvestigationWorkspace: React.FC<InvestigationWorkspaceProps> = ({
   };
 
   return (
-    <div className="flex-1 h-[calc(100vh-4rem)] flex overflow-hidden bg-slate-100">
+    <div className="flex-1 h-[calc(100vh-4rem)] flex overflow-hidden bg-[#FBFBF9]">
       {/* PANEL 1: Documents & Extracted Packet Claims (Left) */}
       <DocumentsListPanel
         documents={documents}
@@ -37,12 +43,15 @@ export const InvestigationWorkspace: React.FC<InvestigationWorkspaceProps> = ({
         onSelectClaim={handleSelectClaim}
         selectedDocId={selectedDocId}
         onSelectDoc={setSelectedDocId}
-        onUploadDoc={onUploadDoc}
+        onUploadDocFiles={onUploadDocFiles}
+        onOpenDocumentsView={onOpenDocumentsView}
       />
 
       {/* PANEL 2: Evidence Viewer & Side-by-Side Comparator (Center) */}
       <EvidenceViewerPanel
         activeClaim={selectedClaim}
+        leftDocId={selectedDocId || documents[0]?.id}
+        rightDocId={documents[documents.length - 1]?.id}
         onSelectClaim={(id) => {
           const found = claims.find((c) => c.id === id);
           if (found) setSelectedClaim(found);
@@ -57,4 +66,3 @@ export const InvestigationWorkspace: React.FC<InvestigationWorkspaceProps> = ({
     </div>
   );
 };
-

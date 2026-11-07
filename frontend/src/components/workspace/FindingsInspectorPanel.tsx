@@ -5,6 +5,7 @@ import {
   GitBranch,
   Info,
   ArrowRight,
+  ShieldCheck,
 } from 'lucide-react';
 import { InvestigationClaimItem } from './DocumentsListPanel';
 
@@ -18,16 +19,17 @@ export const FindingsInspectorPanel: React.FC<FindingsInspectorPanelProps> = ({
   onSubmitReview,
 }) => {
   const [reviewerNotes, setReviewerNotes] = useState<string>('');
-  const confidenceSlider = 75;
+  const [confidenceSlider, setConfidenceSlider] = useState<number>(85);
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [lastActionMsg, setLastActionMsg] = useState<string | null>(null);
 
   if (!activeClaim) {
     return (
-      <div className="w-96 h-full bg-white border-l border-slate-200 p-6 flex flex-col items-center justify-center text-center text-slate-400 select-none">
-        <GitBranch className="w-8 h-8 text-slate-300 mb-2" />
-        <div className="text-sm font-semibold text-slate-700">No Claim Selected</div>
-        <div className="text-xs text-slate-400 mt-1">
-          Select a claim from Panel 1 or click a highlighted box in the Evidence Viewer to inspect details.
+      <div className="w-96 h-full bg-white border-l border-[#E8E8E6] p-6 flex flex-col items-center justify-center text-center text-neutral-400 select-none">
+        <GitBranch className="w-8 h-8 text-neutral-300 mb-2" />
+        <div className="text-sm font-semibold text-[#18181B]">no claim selected.</div>
+        <div className="text-xs text-neutral-400 mt-1 max-w-xs">
+          Select a claim from Panel 1 or click a highlighted box in the Evidence Viewer to inspect details and commit audit decisions.
         </div>
       </div>
     );
@@ -37,6 +39,7 @@ export const FindingsInspectorPanel: React.FC<FindingsInspectorPanelProps> = ({
 
   const handleAction = async (disposition: string) => {
     setSubmitting(true);
+    setLastActionMsg(null);
     try {
       await onSubmitReview(
         activeClaim.id,
@@ -44,220 +47,172 @@ export const FindingsInspectorPanel: React.FC<FindingsInspectorPanelProps> = ({
         reviewerNotes || `Reviewer disposition: ${disposition} (confidence ${confidenceSlider}%)`
       );
       setReviewerNotes('');
+      setLastActionMsg(`Disposition recorded: ${disposition}`);
+      setTimeout(() => setLastActionMsg(null), 3000);
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="w-96 h-full bg-white border-l border-slate-200 flex flex-col flex-shrink-0 select-none overflow-y-auto">
+    <div className="w-96 h-full bg-white border-l border-[#E8E8E6] flex flex-col flex-shrink-0 select-none overflow-y-auto">
       {/* Panel 3 Header */}
-      <div className="p-4 border-b border-slate-200 flex items-center justify-between">
+      <div className="p-4 border-b border-[#E8E8E6] flex items-center justify-between">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-            Panel 3 • Findings & Reconciliations
+          <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+            PANEL 3 • RECONCILIATIONS
           </span>
-          <h2 className="text-sm font-bold text-slate-900 mt-0.5">Quick View Inspector</h2>
+          <h2 className="text-sm font-bold text-[#18181B] mt-0.5">quick inspector.</h2>
         </div>
-
-        {/* Status Pill Badge (Thoropass / Transaction Quick View Inspired) */}
-        {isDiscrepancy ? (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-red-50 text-red-700 border border-red-200">
-            <AlertCircle className="w-3.5 h-3.5" />
-            Unreconciled
-          </span>
-        ) : (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            Reconciled
-          </span>
-        )}
+        <div className="flex items-center space-x-1 text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 text-[10px] font-bold">
+          <ShieldCheck className="w-3 h-3" />
+          <span>ZERO-ACCUSATION</span>
+        </div>
       </div>
 
-      <div className="p-4 space-y-5">
-        {/* RECONCILIATION MATCH STATUS NODE TREE (Reproducing Images 4 & 5!) */}
-        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-              <GitBranch className="w-3.5 h-3.5 text-indigo-600" />
-              Reconciliation Match Status
+      <div className="p-5 space-y-5 flex-1">
+        {lastActionMsg && (
+          <div className="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>{lastActionMsg}</span>
+          </div>
+        )}
+
+        {/* Claim Overview Card */}
+        <div className="p-4 rounded-3xl bg-[#FBFBF9] border border-[#E8E8E6] space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono font-semibold uppercase px-2.5 py-0.5 rounded-full bg-white border border-[#E8E8E6] text-neutral-600">
+              {activeClaim.category}
+            </span>
+            <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+              isDiscrepancy
+                ? 'bg-rose-50 text-rose-800 border-rose-200'
+                : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+            }`}>
+              {activeClaim.status}
             </span>
           </div>
 
-          {/* Node Graph Container */}
-          <div className="space-y-2 mt-3 font-sans">
-            {/* Root Node: Declared Claim */}
-            <div className="p-2 rounded-lg bg-white border border-slate-200 shadow-subtle flex items-center justify-between text-xs">
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 rounded-full bg-indigo-600"></span>
-                <span className="font-semibold text-slate-800">Declared Claim:</span>
-              </div>
-              <span className="font-mono font-bold text-slate-900">{activeClaim.declaredValue}</span>
-            </div>
+          <h3 className="font-bold text-xs text-[#18181B] leading-snug">
+            {activeClaim.title}
+          </h3>
 
-            {/* Tree Branch Connectors */}
-            <div className="pl-4 border-l-2 border-slate-200 ml-3 space-y-2 py-1">
-              {/* Branch 1: Salary Slip Verification */}
-              <div className="relative flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 text-xs shadow-subtle">
-                <div className="flex items-center space-x-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                  <span className="text-slate-600 text-[11px]">Salary Slip (Base)</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <span className="font-mono text-[11px] text-slate-700">₹48,000</span>
-                  <span className="text-[9px] px-1 py-0.2 rounded bg-red-100 text-red-700 font-bold">
-                    !
-                  </span>
-                </div>
-              </div>
-
-              {/* Branch 2: Bank Statement Primary Credit */}
-              <div className="relative flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 text-xs shadow-subtle">
-                <div className="flex items-center space-x-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                  <span className="text-slate-600 text-[11px]">Bank Statement Credit</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <span className="font-mono text-[11px] font-bold text-red-600">{activeClaim.extractedValue}</span>
-                  <span className="text-[9px] px-1 py-0.2 rounded bg-red-100 text-red-700 font-bold">
-                    !
-                  </span>
-                </div>
-              </div>
-
-              {/* Branch 3: Candidate Split Payment (+2 Days) */}
-              <div className="relative flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 text-xs shadow-subtle">
-                <div className="flex items-center space-x-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                  <span className="text-slate-600 text-[11px]">Split Incentive (+2d)</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <span className="font-mono text-[11px] text-amber-700">₹33,000</span>
-                  <span className="text-[9px] px-1 py-0.2 rounded bg-amber-100 text-amber-800 font-bold">
-                    candidate
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Tree Summary Footer (Exact match to Image 4: '● 1 match ● 2 exceptions') */}
-            <div className="pt-2 border-t border-slate-200 flex items-center space-x-4 text-[11px] font-medium text-slate-600">
-              <span className="flex items-center gap-1 text-emerald-700">
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span> 1 candidate match
-              </span>
-              <span className="flex items-center gap-1 text-red-700">
-                <span className="w-2 h-2 rounded-full bg-red-500"></span> 2 exceptions
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* STRUCTURED RECORD BREAKDOWN TABLE */}
-        <div>
-          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
-            Claim Audit Record
-          </div>
-          <div className="rounded-xl border border-slate-200 divide-y divide-slate-100 text-xs bg-white">
-            <div className="p-2.5 flex items-center justify-between">
-              <span className="text-slate-500">Unique ID</span>
-              <span className="font-mono font-medium text-slate-800">{activeClaim.id}</span>
-            </div>
-            <div className="p-2.5 flex items-center justify-between">
-              <span className="text-slate-500">Declared Amount</span>
-              <span className="font-mono font-bold text-slate-900">{activeClaim.declaredValue}</span>
-            </div>
-            <div className="p-2.5 flex items-center justify-between">
-              <span className="text-slate-500">Extracted Amount</span>
-              <span className="font-mono font-bold text-red-600">{activeClaim.extractedValue}</span>
-            </div>
-            <div className="p-2.5 flex items-center justify-between">
-              <span className="text-slate-500">Discrepancy Delta</span>
-              <span className="font-mono font-bold text-red-600">
-                {activeClaim.discrepancyDelta || '-₹48,000 (-53.3%)'}
-              </span>
-            </div>
-            <div className="p-2.5 flex items-center justify-between">
-              <span className="text-slate-500">Source Document</span>
-              <span className="text-slate-700 truncate max-w-[160px]">{activeClaim.sourceDoc}</span>
-            </div>
-            <div className="p-2.5 flex items-center justify-between">
-              <span className="text-slate-500">Target Statement</span>
-              <span className="text-slate-700 truncate max-w-[160px]">{activeClaim.targetDoc}</span>
-            </div>
-            <div className="p-2.5 flex items-center justify-between">
-              <span className="text-slate-500">Extraction Engine</span>
-              <span className="font-mono text-[11px] text-slate-600">PyMuPDF + PaddleOCR</span>
-            </div>
-          </div>
-        </div>
-
-        {/* NON-ACCUSATORY ALTERNATIVE EXPLANATIONS */}
-        <div className="p-3.5 rounded-xl bg-indigo-50/50 border border-indigo-100 text-xs">
-          <div className="flex items-center space-x-1.5 text-indigo-900 font-bold mb-2">
-            <Info className="w-4 h-4 text-indigo-600" />
-            <span>Alternative Hypotheses</span>
-          </div>
-          <ul className="space-y-1.5 text-slate-600 text-[11px] leading-relaxed list-disc list-inside">
-            <li>
-              <strong className="text-slate-800">Split Payroll Structure:</strong> Secondary credit of ₹33,000 recorded 2 days later may satisfy total earnings.
-            </li>
-            <li>
-              <strong className="text-slate-800">Annual Bonus Rollup:</strong> Declared gross may incorporate annualized variable allowance.
-            </li>
-          </ul>
-        </div>
-
-        {/* NEXT RECOMMENDED CHECKS */}
-        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
-          <div className="font-bold text-slate-800 mb-1 flex items-center gap-1.5">
-            <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
-            <span>Next Recommended Step</span>
-          </div>
-          <p className="text-[11px] text-slate-600 leading-relaxed">
-            Examine Month 2 covering statement to verify if split payroll behavior is regular or an irregular deposit.
+          <p className="text-xs text-neutral-600 leading-relaxed">
+            {activeClaim.summary}
           </p>
+
+          <div className="pt-2 border-t border-[#E8E8E6] grid grid-cols-2 gap-2 text-[11px] font-mono">
+            <div className="p-2 rounded-2xl bg-white border border-[#E8E8E6]">
+              <span className="text-[10px] text-neutral-400 block">Declared</span>
+              <span className="font-bold text-[#18181B]">{activeClaim.declaredValue}</span>
+            </div>
+            <div className="p-2 rounded-2xl bg-white border border-[#E8E8E6]">
+              <span className="text-[10px] text-neutral-400 block">Observed</span>
+              <span className={`font-bold ${isDiscrepancy ? 'text-rose-700' : 'text-emerald-700'}`}>
+                {activeClaim.extractedValue}
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* REVIEWER SOVEREIGNTY ACTIONS */}
-        <div className="pt-2 border-t border-slate-200 space-y-3">
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-bold text-slate-800">Reviewer Disposition</span>
-            <span className="text-[10px] text-slate-400 font-mono">Immutable Audit Chain</span>
+        {/* Multi-Document Match Status Node Tree */}
+        <div className="p-4 rounded-3xl bg-white border border-[#E8E8E6] space-y-3">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+            Provenance Lineage Tree
           </div>
 
-          <textarea
-            rows={2}
-            placeholder="Add reviewer rationale or notes for audit trail..."
-            value={reviewerNotes}
-            onChange={(e) => setReviewerNotes(e.target.value)}
-            className="w-full text-xs p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
-          />
+          <div className="space-y-2 text-xs">
+            <div className="flex items-center space-x-2 p-2 rounded-2xl bg-[#FBFBF9] border border-[#E8E8E6]">
+              <div className="w-2 h-2 rounded-full bg-neutral-800" />
+              <span className="font-medium text-neutral-700 truncate">Application Declaration (₹90,000)</span>
+            </div>
 
-          {/* Action Button Row */}
-          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="flex items-center justify-center text-neutral-300">
+              <ArrowRight className="w-3.5 h-3.5 rotate-90" />
+            </div>
+
+            <div className="flex items-center space-x-2 p-2 rounded-2xl bg-[#FBFBF9] border border-[#E8E8E6]">
+              <div className="w-2 h-2 rounded-full bg-neutral-800" />
+              <span className="font-medium text-neutral-700 truncate">Salary Slip Month 1 (₹75,000 Net)</span>
+            </div>
+
+            <div className="flex items-center justify-center text-neutral-300">
+              <ArrowRight className="w-3.5 h-3.5 rotate-90" />
+            </div>
+
+            <div className="p-2.5 rounded-2xl bg-amber-50/60 border border-amber-200 space-y-1">
+              <div className="flex items-center justify-between text-[11px] font-semibold text-amber-900">
+                <span>Split Payroll Candidate (₹42k + ₹33k)</span>
+                <span className="text-[10px] font-mono text-amber-700">Matches 100%</span>
+              </div>
+              <p className="text-[10px] text-amber-800">
+                Two credits within 48h from Apex FinTech match declared net disbursement.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Reviewer Disposition Section */}
+        <div className="p-4 rounded-3xl bg-[#FBFBF9] border border-[#E8E8E6] space-y-3">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+            Reviewer Disposition & Hashing
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-[11px] font-semibold text-neutral-700 block">
+              Confidence Calibration: {confidenceSlider}%
+            </label>
+            <input
+              type="range"
+              min="50"
+              max="100"
+              value={confidenceSlider}
+              onChange={(e) => setConfidenceSlider(Number(e.target.value))}
+              className="w-full accent-[#121212] bg-[#E8E8E6] rounded-lg h-1.5 cursor-pointer"
+            />
+          </div>
+
+          <div>
+            <label className="text-[11px] font-semibold text-neutral-700 block mb-1">
+              Audit Note / Justification
+            </label>
+            <textarea
+              rows={2}
+              value={reviewerNotes}
+              onChange={(e) => setReviewerNotes(e.target.value)}
+              placeholder="e.g. Split direct deposit verified against employment contract appendix..."
+              className="w-full text-xs p-3 rounded-2xl bg-white border border-[#E8E8E6] text-[#18181B] focus:outline-none focus:ring-1 focus:ring-[#121212] resize-none"
+            />
+          </div>
+
+          <div className="space-y-2 pt-1">
             <button
+              disabled={submitting}
               onClick={() => handleAction('CONFIRMED_DISCREPANCY')}
-              disabled={submitting}
-              className="py-2 px-3 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors shadow-sm disabled:opacity-50 text-center"
+              className="w-full py-2.5 rounded-full text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition-colors shadow-xs disabled:opacity-50 flex items-center justify-center gap-1.5"
             >
-              Flag Discrepancy
+              <AlertCircle className="w-3.5 h-3.5" />
+              <span>Confirm Discrepancy Exception</span>
             </button>
+
             <button
-              onClick={() => handleAction('DISMISSED_EXPLAINED')}
               disabled={submitting}
-              className="py-2 px-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors shadow-sm disabled:opacity-50 text-center"
+              onClick={() => handleAction('DISMISSED_EXPLAINED')}
+              className="w-full py-2.5 rounded-full text-xs font-semibold bg-[#121212] text-white hover:bg-neutral-800 transition-colors shadow-xs disabled:opacity-50 flex items-center justify-center gap-1.5"
             >
-              Mark Explained
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>Dismiss as Explained (Reconciled)</span>
+            </button>
+
+            <button
+              disabled={submitting}
+              onClick={() => handleAction('CUSTOMER_INQUIRY')}
+              className="w-full py-2.5 rounded-full text-xs font-semibold bg-white border border-[#E8E8E6] text-neutral-800 hover:bg-[#F4F4F2] transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5"
+            >
+              <Info className="w-3.5 h-3.5" />
+              <span>Mark for Customer Inquiry</span>
             </button>
           </div>
-
-          <button
-            onClick={() => handleAction('REQUEST_ADDITIONAL_DOCS')}
-            disabled={submitting}
-            className="w-full py-1.5 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 text-[11px] font-semibold hover:bg-amber-100 transition-colors text-center"
-          >
-            Request Form 16 / Additional Evidence
-          </button>
         </div>
       </div>
     </div>
