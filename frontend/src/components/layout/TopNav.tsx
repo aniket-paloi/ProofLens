@@ -101,7 +101,7 @@ export const TopNav: React.FC<TopNavProps> = ({
               isBackendReady ? 'bg-emerald-600 animate-pulse' : 'bg-amber-600'
             }`}
           />
-          <span>{isBackendReady ? 'FastAPI 127.0.0.1:8000' : 'Local Standby'}</span>
+          <span>{isBackendReady ? 'Engine Online' : 'Standby'}</span>
         </div>
 
         {statusNotification && (

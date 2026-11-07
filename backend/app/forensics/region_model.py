@@ -27,7 +27,12 @@ class RegionClassifierAdapter:
 
         self.device = torch.device("cpu")
         if checkpoint_path is None:
-            checkpoint_path = os.path.join("ml", "checkpoints", "mobilenet_v3_small_region.pt")
+            possible_paths = [
+                Path(__file__).resolve().parent.parent.parent.parent / "ml" / "checkpoints" / "mobilenet_v3_small_region.pt",
+                Path(__file__).resolve().parent.parent.parent / "ml" / "checkpoints" / "mobilenet_v3_small_region.pt",
+                Path("ml/checkpoints/mobilenet_v3_small_region.pt"),
+            ]
+            checkpoint_path = next((str(p) for p in possible_paths if p.exists()), str(possible_paths[0]))
         
         self.checkpoint_path = checkpoint_path
         self.model = self._load_model()
