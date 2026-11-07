@@ -1,3 +1,4 @@
+from pathlib import Path
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -38,13 +39,18 @@ app.include_router(reviews.router, prefix=settings.API_PREFIX)
 app.include_router(audit.router, prefix=settings.API_PREFIX)
 app.include_router(extensions.router, prefix=settings.API_PREFIX)
 
-@app.get("/")
-def root():
-    return {
-        "app": settings.PROJECT_NAME,
-        "version": settings.VERSION,
-        "tagline": "Don't Just Verify Documents. Investigate the Evidence.",
-        "docs_url": "/docs",
-        "health_url": "/health/ready"
-    }
+frontend_dist = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"
+if frontend_dist.exists():
+    from fastapi.staticfiles import StaticFiles
+    app.mount("/", StaticFiles(directory=str(frontend_dist), html=True), name="frontend")
+else:
+    @app.get("/")
+    def root():
+        return {
+            "app": settings.PROJECT_NAME,
+            "version": settings.VERSION,
+            "tagline": "Don't Just Verify Documents. Investigate the Evidence.",
+            "docs_url": "/docs",
+            "health_url": "/health/ready"
+        }
 
