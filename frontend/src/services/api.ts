@@ -1,14 +1,15 @@
 import { Case, Field, Finding, AuditEvent, Document } from '../types';
 
-const API_BASE = '/api';
+const BACKEND_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+const API_BASE = `${BACKEND_URL}/api`;
 
 export async function fetchHealth() {
-  const res = await fetch('/health/ready');
+  const res = await fetch(`${BACKEND_URL}/health/ready`);
   return res.json();
 }
 
 export async function fetchCapabilities() {
-  const res = await fetch('/capabilities');
+  const res = await fetch(`${BACKEND_URL}/capabilities`);
   return res.json();
 }
 
