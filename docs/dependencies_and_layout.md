@@ -4,8 +4,6 @@
 
 ```
 ProofLens/
-├── AGENTS.md                              # Persistent architectural rules & invariants
-├── ProofLens_Antigravity_Prompt_Pack.md   # Complete consolidated prompt pack & specs
 ├── THIRD_PARTY_NOTICES.md                 # Open source attributions for utilized code
 ├── README.md                              # Project setup and review documentation
 │

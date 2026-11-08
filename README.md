@@ -1,9 +1,13 @@
 # ProofLens — Evidence-Driven Financial Document Investigation Workspace
 
-[![Tests: 51 Passed](https://img.shields.io/badge/tests-51%20passed-10b981?style=flat-square)](backend/tests/)
+[![Live App](https://img.shields.io/badge/Live%20App-prooflens--seven.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://prooflens-seven.vercel.app)
+[![Tests: 52 Passed](https://img.shields.io/badge/tests-52%20passed-10b981?style=flat-square)](backend/tests/)
 [![Python: 3.11–3.13](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-18181b?style=flat-square)](https://www.python.org/)
 [![Frontend: React 18 + TypeScript](https://img.shields.io/badge/frontend-React%2018%20%2B%20TypeScript-18181b?style=flat-square)](frontend/)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square)](LICENSE)
+
+> **Live Production Application:** [https://prooflens-seven.vercel.app](https://prooflens-seven.vercel.app)  
+> **Author & Lead Architect:** Aniket Paloi  
 
 ProofLens is an evidence-first document investigation workspace designed for retail loan packets and financial underwriting (Loan Application Forms, Consecutive Salary Slips, and Covering Bank Statements).
 
@@ -11,7 +15,15 @@ Rather than relying on black-box risk scores or speculative authenticity percent
 
 ---
 
-## Key Capabilities
+## Live Deployment & Online Access
+
+- **Web Application:** [https://prooflens-seven.vercel.app](https://prooflens-seven.vercel.app)
+- **API Health Endpoint:** [https://prooflens-seven.vercel.app/health/ready](https://prooflens-seven.vercel.app/health/ready)
+- **Interactive Documentation:** [https://prooflens-seven.vercel.app/docs](https://prooflens-seven.vercel.app/docs)
+
+---
+
+## Core Verification Architecture
 
 1. **Dual-Layer Text & Stream Cross-Check**
    - Compares raw PDF content streams (`/Tj`, `/TJ`, `/Do`) against visible rendered text layers.
@@ -70,23 +82,23 @@ ProofLens features an editorial, high-clarity interface inspired by the Stoic iO
 
 ---
 
-## Quick Start
+## Quick Start & Local Development
 
 ### 1. One-Click Launchers (Windows)
 
 - **Start Web App + Backend:** Double-click `start_prooflens.bat` (or run `run_prooflens.bat`).
-  - Web UI opens at: [http://127.0.0.1:5173/](http://127.0.0.1:5173/)
-  - Backend runs at: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-- **Run All Tests:** Double-click `run_tests.bat`.
+  - Web UI: [http://127.0.0.1:5173/](http://127.0.0.1:5173/)
+  - Backend: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+- **Run All Automated Tests:** Double-click `run_tests.bat`.
 
 ### 2. Manual Setup & Execution
 
 #### Backend (FastAPI + SQLAlchemy)
 ```bash
-# Ensure dependencies are installed
-pip install fastapi uvicorn sqlalchemy pymupdf opencv-python-headless reportlab torch torchvision
+# Install dependencies
+pip install -r requirements.txt
 
-# Start development server
+# Start local server
 python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000
 ```
 - Interactive API Documentation: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
@@ -102,21 +114,21 @@ npm run dev -- --host 127.0.0.1 --port 5173
 
 ---
 
-## Test Suite
+## Automated Test Suite
 
-Run the full pytest suite (51 unit and integration tests):
+Run the full pytest suite (52 unit and integration tests):
 
 ```bash
 python -m pytest backend/tests -v
 ```
 
-Execute the held-out blind evaluation benchmark:
+Execute the held-out evaluation benchmark:
 
 ```bash
 python -c "from backend.evaluation.eval_suite import run_blind_evaluation; print(run_blind_evaluation())"
 ```
 
-Verify the frontend TypeScript build:
+Verify the frontend TypeScript production bundle:
 
 ```bash
 cd frontend
@@ -148,7 +160,7 @@ ProofLens/
 │   │   └── simulation/    # What-If hypothetical investigation branching
 │   ├── evaluation/        # Held-out evaluation suite & empirical metrics
 │   ├── generator/         # Synthetic packet generator & PDF builder
-│   └── tests/             # 51 integration & unit tests
+│   └── tests/             # 52 integration & unit tests
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
@@ -176,16 +188,31 @@ ProofLens/
 ├── docs/
 │   ├── architecture.md    # System architecture and data flow diagrams
 │   ├── capability_matrix.md # Empirical precision/recall metrics & limitation scope
-│   └── progress.md        # Comprehensive milestone execution tracker
+│   ├── decisions.md       # Architectural Decision Records (ADRs)
+│   ├── dependencies_and_layout.md # Project directory and dependency plan
+│   ├── progress.md        # Feature and milestone progress matrix
+│   └── requirements_matrix.md # Traceability matrix for all 18 features
 ├── ml/
 │   ├── checkpoints/       # Trained MobileNetV3 Small region classifier weights
 │   ├── dataset.py         # Candidate crop dataset pipeline
 │   ├── train.py           # Model training pipeline
 │   └── MODEL_CARD.md      # Model card, ethical framing, and limitations
+├── Dockerfile             # Multi-stage production container build
+├── docker-compose.yml     # Container orchestration
+├── render.yaml            # Render blueprint definition
+├── vercel.json            # Vercel Services multi-service configuration
+├── requirements.txt       # Production Python dependencies
 ├── start_prooflens.bat    # Windows batch launcher (backend + frontend + browser)
 ├── run_prooflens.bat      # Alternative batch launcher
 └── run_tests.bat          # One-click Windows test suite runner
 ```
+
+---
+
+## Author & Engineering Team
+
+- **Lead Engineer & System Architect:** Aniket Paloi
+- **Domain:** Evidence-driven forensic document cross-checking & underwriting verification.
 
 ---
 

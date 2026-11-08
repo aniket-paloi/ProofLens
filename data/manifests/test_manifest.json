@@ -1,7 +1,7 @@
 [
   {
     "reference_number": "LOAN-2026-TE01",
-    "applicant_name": "Siddharth B. Jamdhade",
+    "applicant_name": "Aniket Paloi",
     "declared_employer": "Apex FinTech Labs Pvt Ltd",
     "declared_gross": 90000,
     "declared_net": 75000,
@@ -14,7 +14,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TE01",
+    "packet_directory": "data/fictional_packets/LOAN-2026-TE01",
     "scenario": "SALARY_INFLATION_MISMATCH",
     "description": "Primary test dossier: Declares \u20b990k gross / \u20b975k net; bank reflects \u20b942k primary + \u20b933k delayed credit."
   },
@@ -33,7 +33,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TE02",
+    "packet_directory": "data/fictional_packets/LOAN-2026-TE02",
     "scenario": "CLEAN_CONSISTENT",
     "description": "Blind test clean benchmark case."
   },
@@ -52,7 +52,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TE03",
+    "packet_directory": "data/fictional_packets/LOAN-2026-TE03",
     "scenario": "BALANCE_RECONCILIATION_FAILURE",
     "description": "Arithmetic ledger gap: May 2026 bank statement running balance fails reconciliation check by \u20b950,000."
   },
@@ -71,7 +71,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TE04",
+    "packet_directory": "data/fictional_packets/LOAN-2026-TE04",
     "scenario": "VARIABLE_BONUS_ROLLUP",
     "description": "Consistent payroll with quarterly compensation rollup."
   }

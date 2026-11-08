@@ -14,7 +14,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR01",
+    "packet_directory": "data/fictional_packets/LOAN-2026-TR01",
     "scenario": "CLEAN_CONSISTENT",
     "description": "Verified baseline: TCS corporate payroll matching application declaration exactly."
   },
@@ -33,7 +33,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR02",
+    "packet_directory": "data/fictional_packets/LOAN-2026-TR02",
     "scenario": "CLEAN_CONSISTENT",
     "description": "Clean consistent case with month-end credit schedule."
   },
@@ -52,7 +52,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR03",
+    "packet_directory": "data/fictional_packets/LOAN-2026-TR03",
     "scenario": "LEGITIMATE_SPLIT_PAYROLL",
     "description": "Legitimate split payroll: \u20b955k base + \u20b933k performance allowance sums to \u20b988k net."
   },
@@ -71,7 +71,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR04",
+    "packet_directory": "data/fictional_packets/LOAN-2026-TR04",
     "scenario": "SALARY_INFLATION_MISMATCH",
     "description": "Income discrepancy: Declares \u20b976k net, bank only reflects \u20b945k credit (gap of \u20b931k)."
   },
@@ -90,7 +90,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR05",
+    "packet_directory": "data/fictional_packets/LOAN-2026-TR05",
     "scenario": "EMPLOYER_ENTITY_MISMATCH",
     "description": "Employer mismatch: Declares Wipro, but payslip and bank credit name Alpha Logistics."
   },
@@ -109,7 +109,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-TR06",
+    "packet_directory": "data/fictional_packets/LOAN-2026-TR06",
     "scenario": "PROMPT_INJECTION_TEXT_LAYER",
     "description": "Adversarial security check: White-on-white text layer prompt injection payload embedded."
   }

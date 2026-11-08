@@ -14,7 +14,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-VA01",
+    "packet_directory": "data/fictional_packets/LOAN-2026-VA01",
     "scenario": "CLEAN_CONSISTENT",
     "description": "Validation clean baseline case."
   },
@@ -33,7 +33,7 @@
       ],
       "bank_statement": "bank_statement_3mo.pdf"
     },
-    "packet_directory": "C:\\Users\\Aniket\\.gemini\\antigravity\\scratch\\ProofLens\\data\\fictional_packets\\LOAN-2026-VA02",
+    "packet_directory": "data/fictional_packets/LOAN-2026-VA02",
     "scenario": "FONT_BASELINE_DISPLACEMENT",
     "description": "Forensic baseline anomaly: Payslip Net Payable digit baseline is visibly displaced by 3.5px."
   }

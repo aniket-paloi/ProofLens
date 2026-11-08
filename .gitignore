@@ -46,5 +46,14 @@ prooflens.db-shm
 prooflens.db-wal
 
 .kilo/
+.agent/
+.agents/
+.gemini/
+.gsd/
+adapters/
+AGENTS.md
+GSD-STYLE.md
+PROJECT_RULES.md
+ProofLens_Antigravity_Prompt_Pack.md
 storage/lab/*
 !storage/lab/.gitkeep

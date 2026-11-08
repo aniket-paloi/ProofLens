@@ -2,7 +2,7 @@
 
 **Audit Date:** 5 November 2026  
 **Auditor:** ProofLens Architecture Team  
-**Scope:** 9 research and open-source references listed in `ProofLens_Antigravity_Prompt_Pack.md`.
+**Scope:** 9 research and open-source references in retail document forensics.
 
 ---
 

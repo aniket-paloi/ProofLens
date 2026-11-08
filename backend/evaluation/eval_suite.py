@@ -57,6 +57,8 @@ def run_blind_evaluation(
         db.refresh(case)
 
         packet_dir = item["packet_directory"]
+        if not os.path.isabs(packet_dir):
+            packet_dir = os.path.abspath(packet_dir)
         doc_ids = []
 
         # Ingest Application Form

@@ -348,7 +348,7 @@ def generate_all_packets_and_manifests(output_dir: str = "data") -> Dict[str, An
                 "salary_slips": ["salary_slip_m1.pdf", "salary_slip_m2.pdf", "salary_slip_m3.pdf"],
                 "bank_statement": "bank_statement_3mo.pdf"
             },
-            "packet_directory": os.path.abspath(case_dir),
+            "packet_directory": os.path.relpath(case_dir, start=os.getcwd()).replace("\\", "/"),
             "scenario": case.scenario.value,
             "description": case.description
         }
